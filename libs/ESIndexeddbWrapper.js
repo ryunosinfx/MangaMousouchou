@@ -144,8 +144,8 @@ class IA {
 	async get(k) {
 		return gD(await this.getRecord(k));
 	}
-	getAll() {
-		return this.#i.slctAll(this.tn, this.isC);
+	getAll(ofst, lc, isKO = false, kPx) {
+		return this.#i.slctAll(this.tn, N, N, ofst, lc, isKO, kPx, this.isC);
 	}
 	delete(k) {
 		return k ? this.#i.del(this.tn, k, this.isC) : N;
@@ -272,7 +272,14 @@ class IH {
 			keys = d.keys,
 			key = d.key,
 			isC = d.isC;
-		if (cSAll === c) return z.gC(tn, c, d, () => o.sAll({ tn, rng, drct, ofst: d.offset, cnt: d.lc }, d.cb), isC);
+		if (cSAll === c)
+			return z.gC(
+				tn,
+				c,
+				d,
+				() => o.sAll({ tn, rng, drct, ofst: d.offset, cnt: d.lc, isKO: d.isKO, kPx: d.kPx }, d.cb),
+				isC
+			);
 		if (cSByKey === c) return z.gC(tn, c, d, () => o.sByK({ tn, key }), isC);
 		if (cSByKeys === c) return z.gC(tn, c, d, () => o.slctByKs({ tn, keys }), isC);
 		if (cSF1 === c) return z.gC(tn, c, d, () => o.sF1({ tn, rng, drct }), isC);
@@ -287,17 +294,19 @@ class IH {
 		if (cDelIdx === c) return o.di(tn, d.idxN);
 		if (cGetOBN === c) return o.getOBN();
 	}
-	slctAllFM(tn, k, drct, ofst, lc, isC = 1) {
+	slctAllFM(tn, k, drct, ofst, lc, isKO, kPx, isC = 1) {
 		const n = k.slice(0, -1) + String.fromCharCode(k.slice(-1).charCodeAt() + 1);
-		return this.slctAll(tn, IDBKeyRange.bound(k, n, false, true), drct, ofst, lc, isC);
+		return this.slctAll(tn, IDBKeyRange.bound(k, n, false, true), drct, ofst, lc, isKO, kPx, isC);
 	}
-	slctAll(tn, rng, drct, ofst, lc, isC = 1) {
+	slctAll(tn, rng, drct, ofst, lc, isKO, kPx, isC = 1) {
 		return this.q(cSAll, {
 			tn, //selectall
 			rng,
 			drct,
 			ofst,
 			lc,
+			isKO,
+			kPx,
 			isC,
 		});
 	}
@@ -444,20 +453,25 @@ class IC {
 		const z = this,
 			ob = z.gOS(await z.oDB().catch(tE(`sAll->oDB tn:${p.tn}`)), p.tn, M_R);
 		// console.log('sAll C ob:', ob);
-		return await z.sAllE(ob, p.rng, 0, p.ofst, p.cnt, cbc);
+		return await z.sAllE(ob, p.rng, 0, p.ofst, p.cnt, p.isKO, p.kPx, cbc);
 	}
-	sAllE(ob, d, isGetF1, ofst, cnt, cb) {
+	sAllE(ob, d, isGetF1, ofst, cnt, isKO = false, kPx = '', cb) {
 		return pr((v, j) => {
 			const isValidCB = typeof ofst === 'function',
 				isOnLimit = typeof ofst === 'number' && typeof cnt === 'number' && ofst > 0 && cnt > 0,
 				endC = isValidCB ? cnt : ofst + cnt,
 				l = [],
-				r = ob.openCursor(d ? d : void 0);
+				r = ob.openCursor(d ? d : void 0),
+				kPxL = kPx ? kPx.length : 0;
 			let rC = 0;
 			r.onsuccess = (e) => {
 				const c = e.target.result;
 				if (c) {
-					const v = c.value;
+					if (kPx && c.key.substring(0, kPxL) !== kPx) {
+						c.continue();
+						return;
+					}
+					const v = isKO ? c.key : c.value;
 					if (isValidCB && !cb(v)) return c.continue();
 					if (isOnLimit)
 						if (ofst > rC) return c.continue(void 0, rC++);
