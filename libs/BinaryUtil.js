@@ -28,6 +28,7 @@ export class B {
 	static i32 = (a) => new Int32Array(a);
 }
 export class BinUtil {
+	static a = [];
 	static isSameAb = (abA, abB) => BinUtil.a2B(abA) === BinUtil.a2B(abB);
 	static isB64 = (s = N) => s % 4 === 0 && /[+/=0-9a-zA-Z]+/.test(s);
 	static s2u = (s) => te.encode(s);
@@ -97,9 +98,12 @@ export class BinUtil {
 		return a;
 	}
 	static u2b(u) {
-		const r = [];
+		const r = BinUtil.a;
+		r.splice(0, r.length);
 		for (const e of u) r.push(String.fromCharCode(e));
-		return r.join(N);
+		const bs = r.join(N);
+		r.splice(0, r.length);
+		return bs;
 	}
 	static b2u(bs) {
 		const l = bs.length,
@@ -123,7 +127,8 @@ export class BinUtil {
 	}
 	static N2u(n) {
 		let a = n;
-		const p = [];
+		const p = BinUtil.a;
+		p.splice(0, r.length);
 		while (Ma(a) > 0) {
 			p.unshift(a % 256);
 			a = a >> 8;
@@ -131,6 +136,7 @@ export class BinUtil {
 		const l = p.length,
 			u = B.u8(l);
 		for (let i = 0; i < l; i++) u[i] = p[i];
+		p.splice(0, r.length);
 		return u;
 	}
 	static b32a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.split(N);
@@ -167,7 +173,8 @@ export class BinUtil {
 	}
 	static b32e(ab) {
 		const u = B.u8(ab),
-			a = [];
+			a = BinUtil.a;
+		a.splice(0, r.length);
 		let j = 0,
 			k = 0;
 		for (let i = 0; i < u.length; i++) {
@@ -188,7 +195,9 @@ export class BinUtil {
         efffffgg
         ggghhhhh
          */
-		return a.join(N);
+		const b32 = a.join(N);
+		a.splice(0, r.length);
+		return b32;
 	}
 }
 export class Cryptor {
