@@ -45,6 +45,7 @@ export class Vw {
 	static ael = (e, ev, cb) => (e.addEventListener(ev, cb) ? cb : cb);
 	static rel = (e, ev, cb) => (e.removeEventListener(ev, cb) ? cb : cb);
 	static sT = (e, msg) => (msg ? (e.textContent = msg) : e.textContent);
+	static cT = (e) => (e.textContent = '');
 	static aC = (e, cN) => e.classList.add(cN);
 	static rC = (e, cN) => e.classList.remove(cN);
 	static tC = (e, cN) => e.classList.toggle(cN);
