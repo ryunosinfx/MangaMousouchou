@@ -1,7 +1,7 @@
-const wi = window,
+const wi = globalThis,
 	N = '';
 export class Vw {
-	static d = document;
+	static d = wi.document ? wi.document : {};
 	static cnvtGebav2Camel(t = N) {
 		if (!t) return t;
 		const s = t.split('-');
@@ -114,6 +114,6 @@ export class Vw {
 			Vw.rel(wi, 'mousemove', f);
 		});
 	}
-	static b = Vw.gB();
+	static b = wi.document ? Vw.gB() : null;
 	static append2Body = (e) => Vw.b.appendChild(e);
 }
