@@ -64,7 +64,7 @@ export class idbw {
 		cacheObName: 'cacheTimes',
 		dbName: 'IDBWrapper',
 		ua: idbw.ua,
-		domain: window.location,
+		domain: globalThis.location,
 		kpn: idbw.kpn,
 	};
 	static sysDBN = idbw.cnst.sysDbName;
@@ -361,7 +361,7 @@ class IC {
 	constructor(d) {
 		const z = this;
 		const seed = Math.floor(Math.random() * 100000);
-		z.idb = window.indexedDB;
+		z.idb = globalThis.indexedDB;
 		z.dbn = d;
 		z.kpM = {};
 		z.db = N;
