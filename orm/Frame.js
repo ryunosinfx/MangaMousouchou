@@ -1,9 +1,12 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase, nullList } from './base/ORMbase.js';
+import { FrameTypes } from '../const/FrameTypes.js';
 export class Frame extends ORMbase {
 	static props = {
 		id: 'id',
+		name: 'Frame',
 		prop: ['id', 'listIdList', 'name', 'volume', 'parent', 'require', 'type', 'order', 'createTime', 'user'],
 	};
+	static ia = null;
 	constructor(
 		id = '',
 		listIdList = [],
@@ -11,12 +14,12 @@ export class Frame extends ORMbase {
 		volume,
 		parent,
 		require = '',
-		type = '',
+		type = FrameTypes.NONE,
 		order = 0,
 		createTime = Date.now(),
 		user = 'root'
 	) {
-		super('Frame', Frame.props);
+		super(Frame);
 		this.id = id;
 		this.listIdList = listIdList;
 		this.name = name;
@@ -29,9 +32,26 @@ export class Frame extends ORMbase {
 		this.user = user;
 		this.setSelf(this);
 	}
-	static async load(id) {
-		return await new Frame(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(Frame);
+	static getAll = async (conf) => await ORMbase.getAll(Frame, conf);
+	static update = async (
+		id,
+		listIdList = nullList,
+		name = '',
+		volume = 0,
+		parent,
+		require = '',
+		type = FrameTypes.NONE,
+		order = 0,
+		createTime = Date.now(),
+		user = 'root'
+	) =>
+		await ORMbase.update(
+			Frame,
+			{ id, listIdList, name, volume, parent, require, type, order, createTime, user },
+			true
+		);
+	static load = async (id) => await new Frame(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}

@@ -1,8 +1,13 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase, nullList } from './base/ORMbase.js';
 export class Title extends ORMbase {
-	static props = { id: 'id', prop: ['id', 'name', 'rootFrameId', 'relativeTitleIds', 'createTime', 'user'] };
+	static props = {
+		id: 'id',
+		name: 'Title',
+		prop: ['id', 'name', 'rootFrameId', 'relativeTitleIds', 'createTime', 'user'],
+	};
+	static ia = null;
 	constructor(id = '', name, rootFrameId = '', relativeTitleIds = [], createTime = Date.now(), user = 'root') {
-		super('Title', Title.props);
+		super(Title);
 		this.id = id;
 		this.name = name;
 		this.rootFrameId = rootFrameId;
@@ -11,9 +16,17 @@ export class Title extends ORMbase {
 		this.user = user;
 		this.setSelf(this);
 	}
-	static async load(id) {
-		return await new Title(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(Title);
+	static getAll = async (conf) => await ORMbase.getAll(Title, conf);
+	static update = async (
+		id,
+		name = '',
+		rootFrameId,
+		relativeTitleIds = nullList,
+		createTime = Date.now(),
+		user = 'root'
+	) => await ORMbase.update(Title, { id, name, rootFrameId, relativeTitleIds, createTime, user }, true);
+	static load = async (id) => await new Title(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}

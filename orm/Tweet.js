@@ -1,8 +1,15 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase, nullList } from './base/ORMbase.js';
+import { TweetStates } from '../const/TweetStates.js';
 export class Tweet extends ORMbase {
-	static props = { id: 'id', prop: ['id', 'replayTweetIds', 'typeId', 'tagIds', 'state', 'createTime', 'user'] };
+	static props = {
+		id: 'id',
+		name: 'Tweet',
+		prop: ['id', 'replayTweetIds', 'typeId', 'tagIds', 'state', 'createTime', 'user'],
+	};
+	static ia = null;
+
 	constructor(id = '', replayTweetIds, typeId, tagIds = [], state, createTime = Date.now(), user = 'root') {
-		super('Tweet', Tweet.props);
+		super(Tweet);
 		this.id = id;
 		this.replayTweetIds = replayTweetIds;
 		this.typeId = typeId;
@@ -10,11 +17,21 @@ export class Tweet extends ORMbase {
 		this.state = state;
 		this.createTime = createTime;
 		this.user = user;
-		this.setSelf(this);
+		super.setSelf(this);
 	}
-	static async load(id) {
-		return await new Tweet(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(Tweet);
+	static getAll = async (conf) => await ORMbase.getAll(Tweet, conf);
+	static update = async (
+		id,
+		replayTweetIds = nullList,
+		typeId,
+		tagIds = nullList,
+		state = TweetStates.Visible,
+		createTime = Date.now(),
+		user = 'root'
+	) => await ORMbase.update(Tweet, { id, replayTweetIds, typeId, tagIds, state, createTime, user }, true);
+
+	static load = async (id) => await new Tweet(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}

@@ -21,7 +21,7 @@ const te = new TextEncoder('utf-8'),
 		return null;
 	},
 	cy = crypto.subtle,
-	wi = window;
+	wi = globalThis;
 export class B {
 	static u8 = (a) => new Uint8Array(a);
 	static u32 = (a) => new Uint32Array(a);
@@ -33,6 +33,7 @@ export class BinUtil {
 	static isB64 = (s = N) => s % 4 === 0 && /[+/=0-9a-zA-Z]+/.test(s);
 	static s2u = (s) => te.encode(s);
 	static u2s = (u) => td.decode(u);
+	static u2sSub = (u, s, e) => td.decode(u.subarray(s, e));
 	static a2s = (a) => td.decode(B.u8(a));
 	static a2B = (i) => wi.btoa(BinUtil.u2b(B.u8(i.buffer ? i.buffer : i)));
 	static u2B = (u) => wi.bta(BinUtil.u2b(u));
@@ -123,6 +124,12 @@ export class BinUtil {
 		const l = u.length,
 			n = B.u8(l);
 		for (let i = 0; i < l; i++) n[i] = u[i];
+		return n;
+	}
+	static subDpU(u, s, e) {
+		const l = e ? e - s : u.length - s,
+			n = B.u8(l);
+		for (let i = 0; i < l; i++) n[i] = u[i + s];
 		return n;
 	}
 	static N2u(n) {

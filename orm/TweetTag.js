@@ -1,8 +1,9 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase, nullList } from './base/ORMbase.js';
 export class TweetTag extends ORMbase {
-	static props = { id: 'id', prop: ['id', 'name', 'order', 'categories', 'createTime', 'user'] };
+	static props = { id: 'id', name: 'TweetTag', prop: ['id', 'name', 'order', 'categories', 'createTime', 'user'] };
+	static ia = null;
 	constructor(id = '', name, order = 0, categories = [], createTime = Date.now(), user = 'root') {
-		super('TweetTag', TweetTag.props);
+		super(TweetTag);
 		this.id = id;
 		this.name = name;
 		this.order = order;
@@ -11,9 +12,11 @@ export class TweetTag extends ORMbase {
 		this.user = user;
 		this.setSelf(this);
 	}
-	static async load(id) {
-		return await new TweetTag(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(TweetTag);
+	static getAll = async (conf) => await ORMbase.getAll(TweetTag, conf);
+	static update = async (id, name = '', order = 0, categories = nullList, createTime = Date.now(), user = 'root') =>
+		await ORMbase.update(TweetTag, { id, name, order, categories, createTime, user }, true);
+	static load = async (id) => await new TweetTag(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}

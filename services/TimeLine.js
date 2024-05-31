@@ -1,11 +1,12 @@
+import { TweetLine } from '../parts/TweetLine.js';
+import { TweetManager } from './logic/TweetManager.js';
 export class TimeLine {
-	line = [];
-	constructor() {
-		console.log('MainView');
-		this.pagesElm = null;
-		this.editorTextAreaElm = null;
-		this.callbacks = [];
-		this.init();
-		this.second();
+	static lines = [];
+	static build(parentElm) {
+		TimeLine.lines.push(new TweetLine(parentElm));
+	}
+	static async refresh(cond) {
+		const ts = await TweetManager.loadTweets(cond);
+		for (const line of TimeLine.lines) line.refresh(ts);
 	}
 }

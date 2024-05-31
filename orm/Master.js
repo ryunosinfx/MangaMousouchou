@@ -1,8 +1,9 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase } from './base/ORMbase.js';
 export class Master extends ORMbase {
-	static props = { id: 'id', prop: ['id', 'name', 'data', 'type', 'createTime', 'user'] };
+	static props = { id: 'id', name: 'Master', prop: ['id', 'name', 'data', 'type', 'createTime', 'user'] };
+	static ia = null;
 	constructor(id = '', name, data, type, createTime = Date.now(), user = 'root') {
-		super('Master', Master.props);
+		super(Master);
 		this.id = id;
 		this.name = name;
 		this.data = data;
@@ -11,9 +12,11 @@ export class Master extends ORMbase {
 		this.user = user;
 		this.setSelf(this);
 	}
-	static async load(id) {
-		return await new Master(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(Master);
+	static getAll = async (conf) => await ORMbase.getAll(Master, conf);
+	static update = async (id, name = '', data, type = '', createTime = Date.now(), user = 'root') =>
+		await ORMbase.update(Master, { id, name, data, type, createTime, user }, true);
+	static load = async (id) => await new Master(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}

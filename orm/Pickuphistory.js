@@ -1,16 +1,19 @@
-import { ORMbase } from './ORMbase.js';
+import { ORMbase } from './base/ORMbase.js';
 export class Pickuphistory extends ORMbase {
-	static props = { id: 'id', prop: ['id', 'createTime', 'user'] };
+	static props = { id: 'id', name: 'Pickuphistory', prop: ['id', 'createTime', 'user'] };
+	static ia = null;
 	constructor(id = '', createTime = Date.now(), user = 'root') {
-		super('Pickuphistory', Pickuphistory.props);
+		super(Pickuphistory);
 		this.id = id;
 		this.createTime = createTime;
 		this.user = user;
 		this.setSelf(this);
 	}
-	static async load(id) {
-		return await new Pickuphistory(id).loadToSelf(id);
-	}
+	static init = async () => await ORMbase.init(Pickuphistory);
+	static getAll = async (conf) => await ORMbase.getAll(Pickuphistory, conf);
+	static update = async (id, createTime = Date.now(), user = 'root') =>
+		await ORMbase.update(Pickuphistory, { id, createTime, user }, true);
+	static load = async (id) => await new Pickuphistory(id).loadToSelf(id);
 	getId() {
 		return this.id;
 	}
