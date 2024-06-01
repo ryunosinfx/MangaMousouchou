@@ -1,7 +1,9 @@
 const wi = globalThis,
 	N = '';
+// console.log('Vw wi', wi);
 export class Vw {
-	static d = wi.document ? wi.document : {};
+	static isNotBrowser = wi.document ? false : true;
+	static d = wi.document ? wi.document : { isNotBrowser: true };
 	static cnvtGebav2Camel(t = N) {
 		if (!t) return t;
 		const s = t.split('-');
@@ -53,7 +55,7 @@ export class Vw {
 		att && typeof att === 'object' ? Object.keys(att).map((k) => e.setAttribute(k, att[k])) : att;
 	static gB = () => Vw.d.getElementsByTagName('body')[0];
 	static gT = (p, T) => p.getElementsByTagName(T)[0];
-	static ce = (tN) => Vw.d.createElement(tN);
+	static ce = (tN) => (console.log('Vw.d:', Vw.d) ? null : Vw.d.createElement(tN));
 	static copy = async (d) => navigator.clipboard.writeText(d);
 	static uO = (a, b) => {
 		const c = {};
