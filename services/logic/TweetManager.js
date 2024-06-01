@@ -33,7 +33,7 @@ export class TweetManager {
 	}
 	static async postTweetExec(obj) {
 		console.log('postTweetExec obj:', obj);
-		await Tweet.update(obj.id, obj.replayTweetIds, obj.typeId, obj.tagIds, obj.state);
+		await Tweet.update(obj.id, obj.replayTweetIds, obj.typeId, obj.tagIds, obj.state, obj.createTime);
 		const vid = obj.id + ID_DELIMITER + Util.getNowAsU();
 		await TweetValue.update(vid, obj.id, obj.text, obj.binaryDataIds);
 	}
