@@ -1,9 +1,9 @@
 import { VERSION } from '../parts/Version.js';
 import { Vw } from '../libs/Vw.js';
-import { TextEditor } from './TextEditor.js';
 import { MainMenu } from './MainMenu.js';
 import { PagesView } from './PagesView.js';
 import { TimeLine } from './TimeLine.js';
+import { TweetMenu } from '../parts/TweetMenu.js';
 import { MainInput } from './MainInput.js';
 const AppTitle = 'MangaMousouChou';
 
@@ -18,6 +18,7 @@ export class MainView {
 	}
 	async init() {
 		const frame = Vw.div(Vw.b, { class: 'frame', id: 'frame' });
+		TweetMenu.init(frame);
 		console.log(Vw);
 		const header = Vw.div(frame, { class: 'header', id: 'header' });
 		this.buildTitle(header);

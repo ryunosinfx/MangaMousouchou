@@ -1,25 +1,47 @@
 import { Vw } from '../libs/Vw.js';
 import { Util } from '../libs/Util.js';
+import { TweetMenu } from './TweetMenu.js';
 export class TweetView {
 	constructor(parentElm) {
 		this.parentElm = parentElm;
 		this.elm = null;
+		this.t = null;
+		this.menu = null;
+		this.nodes = [];
 	}
 	set(t) {
 		if (!this.elm) this.build();
+		const nodes = this.nodes;
+		nodes.splice(0, nodes.length);
 		const v = t.value;
-		Vw.sT(this.elm.creatTime, Util.convertTimeToFromat(t.createTime));
-		Vw.sT(this.elm.updateTime, Util.convertTimeToFromat(v.createTime));
-		Vw.sT(this.elm.main, v.text);
-		Vw.sT(this.elm.state, t.state);
-		Vw.sT(this.elm.type, t.type);
+		const { frame, header, creatTime, updateTime, type, state, menu, main } = this.elm;
+		Vw.sT(creatTime, Util.convertTimeToFromat(t.createTime));
+		Vw.sT(updateTime, Util.convertTimeToFromat(v.createTime));
+		const rows = v.text.split(/\r\n|\n/g);
+		const matches = main.querySelectorAll('div.TweetRow');
+		const ml = matches.length;
+		for (let i = 0; i < ml; i++) nodes.push(matches[i]);
+		const rl = rows.length;
+		if (ml < rl) {
+			const l = rl - ml;
+			for (let i = 0; i < l; i++) nodes.push(Vw.div(main, { class: 'TweetRow' }));
+		}
+		for (let i = 0; i < rl; i++) Vw.sT(nodes[i], rows[i]);
+		for (let i = rl; i < ml; i++) Vw.rm(nodes[i]);
+		Vw.sT(state, t.state);
+		Vw.sT(type, t.type);
+		Vw.sT(menu, '三');
+		this.t = t;
+		this.menu = menu;
+		nodes.splice(0, nodes.length);
 	}
 	clear() {
 		Vw.cT(this.elm.creatTime);
 		Vw.cT(this.elm.updateTime);
 		Vw.cT(this.elm.type);
 		Vw.cT(this.elm.state);
-		Vw.cT(this.elm.main);
+		Vw.rc(this.elm.main);
+		Vw.rc(this.elm.menu);
 	}
 	build() {
 		console.log('TweetView build', this.elm);
@@ -29,9 +51,11 @@ export class TweetView {
 		const updateTime = Vw.div(header, { class: 'TweetTime' });
 		const type = Vw.div(header, { class: 'TweetType' });
 		const state = Vw.div(header, { class: 'TweetState' });
-		const menu = Vw.div(header, { class: 'TweetMenu' });
+		const menu = Vw.div(header, { class: 'TweetMenuBtn' });
 		const main = Vw.div(frame, { class: 'TweetMain' });
+		Vw.ael(menu, 'click', (e) => TweetMenu.show(this.menu, this.t, frame) && e.stopImmediatePropagation());
 
 		this.elm = { frame, header, creatTime, updateTime, type, state, menu, main };
 	}
+	edit;
 }

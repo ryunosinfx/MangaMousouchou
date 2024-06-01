@@ -16,7 +16,6 @@ export class TweetLine {
 		const io = this.idOrder;
 		map.clear();
 		l.splice(0, l.length);
-		console.log('TweetLine refresh l:' + l + '/io:' + io, ts);
 
 		if (Array.isArray(order) && this.orderType === TweetOrderTypes.manual) {
 			for (const t of ts) map.set(t.id, t);
@@ -24,11 +23,12 @@ export class TweetLine {
 		} else {
 			io.splice(0, io.length);
 			for (const t of ts) {
-				const id = t.creatTime + '_' + t.id;
+				const id = t.createTime + '_' + t.id;
 				map.set(id, t);
 				io.push(id);
 			}
 			io.sort();
+			console.log('TweetLine refresh B l:' + l + '/io:' + io, ts);
 			if (this.orderType === TweetOrderTypes.createTimeDESC) io.reverse();
 			for (const id of io) l.push(map.get(id));
 		}

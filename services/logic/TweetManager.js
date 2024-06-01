@@ -1,5 +1,6 @@
 import { WORKER_TYPE } from '../../const/WorkerType.js';
 import { AddTweet } from '../../const/jobs/AddTweet.js';
+import { EditTweet } from '../../const/jobs/EditTweet.js';
 import { Util } from '../../libs/Util.js';
 import { BinUtil } from '../../libs/BinaryUtil.js';
 import { WorkerManager } from '../../worker/WorkerManager.js';
@@ -21,6 +22,15 @@ export class TweetManager {
 		const dd = BinUtil.s2u(JSON.stringify(a));
 		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
+	static async editTweet(tw, conf) {
+		const a = TweetManager.a;
+		for (const k in tw) a[k] = tw[k];
+		a.conf = conf;
+		a.type = EditTweet.name;
+		console.log('editTweet tw.text :' + tw.text + ' /tw.id:' + tw.id);
+		const dd = BinUtil.s2u(JSON.stringify(a));
+		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+	}
 	static async postTweetExec(obj) {
 		console.log('postTweetExec obj:', obj);
 		await Tweet.update(obj.id, obj.replayTweetIds, obj.typeId, obj.tagIds, obj.state);
@@ -35,7 +45,9 @@ export class TweetManager {
 		for (const tv of v) {
 			const vid = tv.id;
 			const tid = tv.parentTweetId;
-			!map.has(tid) || map.get(tid).id < vid ? map.set(tid, tv) : null;
+			const current = Util.cU2N(vid.split(ID_DELIMITER)[1]);
+			const asNew = map.has(tid) && map.get(tid).id ? Util.cU2N(map.get(tid).id.split(ID_DELIMITER)[1]) : null;
+			!asNew || current > asNew ? map.set(tid, tv) : null;
 		}
 		v.splice(0, v.length);
 		for (const tw of t) {

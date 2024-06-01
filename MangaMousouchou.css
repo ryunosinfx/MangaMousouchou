@@ -1,0 +1,63 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+.None {
+	display: none;
+}
+div#frame {
+	background-color: azure;
+	padding: 1px;
+	margin: 0;
+}
+div#header {
+	display: flex;
+}
+div#titleFrame {
+	color: aqua;
+}
+
+div.TweetFrame {
+	font-size: 80%;
+	margin: 1px;
+	padding: 1px;
+}
+div.TweetHeader {
+	display: flex;
+}
+div.TweetTime {
+	font-size: 80%;
+	color: darkgray;
+}
+div.TweetTime:first-child {
+	font-weight: bold;
+}
+
+div.TweetMenuBtn {
+	cursor: pointer;
+	border: 2px solid #333;
+	width: 20px;
+	border-radius: 15px;
+	text-align: center;
+	margin-left: 2px;
+}
+div.TweetMenuPannel {
+	position: absolute;
+	top: -100px;
+	left: -100px;
+	width: 100px;
+	height: auto;
+	z-index: 9999;
+	background-color: #aaa;
+	padding: 10px;
+	border-radius: 15px;
+}
+div.TweetMenuPannelBtn {
+	cursor: pointer;
+	width: 100px;
+	border-radius: 15px;
+	text-align: center;
+	margin: 2px;
+	color: #aaa;
+	background-color: #333;
+}
