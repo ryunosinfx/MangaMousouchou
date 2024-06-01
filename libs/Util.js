@@ -2,6 +2,12 @@ import { BinUtil } from './BinaryUtil.js';
 const u32a1 = new Uint32Array(2);
 const u32 = Math.pow(2, 32);
 export class Util {
+	static clearObj = (o) => {
+		for (const k in o) delete o[k];
+	};
+	static copyObj = (a, b) => {
+		for (const k in a) b[k] = a[k];
+	};
 	static sleep = (s = 100) => new Promise((r) => setTimeout(() => r(), s));
 	static random = (multiple) => Math.floor(Math.random() * multiple);
 	static mkUUID = () => self.crypto.randomUUID();
@@ -10,6 +16,12 @@ export class Util {
 		u32a1[0] = Math.floor(now / u32);
 		u32a1[1] = now % u32;
 		return BinUtil.a2U(u32a1.buffer);
+	};
+	static cU2N = (b64U) => {
+		const a = new Uint32Array(new Uint8Array(BinUtil.U2a(b64U)).buffer);
+		const b = a.length > 1 ? a[0] * u32 + a[1] : a[0];
+		// console.log('cU2N b64U:' + b64U + ' ' + b + ' /' + a.length, a);
+		return a.length > 1 ? a[0] * u32 + a[1] : a[0];
 	};
 	static convertTimeToFromat(unixtime, format = 'yyyy/MM/dd hh:mm:ss.SSS') {
 		const d = new Date(unixtime);
