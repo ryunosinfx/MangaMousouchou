@@ -11,12 +11,13 @@ export class WorkerManager {
 	static workerSrcs = {};
 	static isInitialized = false;
 	static init = async () => {
-		(WorkerManager.workerSrcs[WORKER_TYPE.server] = {
-			src: Util.getCurrentPath() + './worker/BaseWorker.js',
+		const path = Util.getCurrentPath();
+		WorkerManager.workerSrcs[WORKER_TYPE.server] = {
+			src: (path ? path : '.') + '/worker/BaseWorker.js',
 			lifetime: 30000,
 			count: 2,
-		}),
-			await LifeCycle.init();
+		};
+		await LifeCycle.init();
 		for (const type in WorkerManager.workerSrcs) {
 			WorkerManager.workersRoundCounter.set(type, 0);
 			WorkerManager.bootWorker(type);
