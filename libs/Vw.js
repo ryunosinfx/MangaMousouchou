@@ -44,7 +44,7 @@ export class Vw {
 	static click = (e, cb) => Vw.ael(e, 'click', cb);
 	static change = (e, cb) => Vw.ael(e, 'change', cb);
 	static input = (e, cb) => Vw.ael(e, 'input', cb);
-	static ael = (e, ev, cb) => (e.addEventListener(ev, cb) ? cb : cb);
+	static ael = (e, ev, cb, isStopPropagation = false) => (e.addEventListener(ev, cb, isStopPropagation) ? cb : cb);
 	static rel = (e, ev, cb) => (e.removeEventListener(ev, cb) ? cb : cb);
 	static sT = (e, msg) => (msg ? (e.textContent = msg) : e.textContent);
 	static cT = (e) => (e.textContent = '');
