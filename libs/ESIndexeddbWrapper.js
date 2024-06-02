@@ -286,7 +286,7 @@ class IH {
 		if (cBulkIU === c) return cb(z.cc(tn, isC), o.bulkIU(tn, kpn, d.data, d.cb));
 		if (cIU === c) return cb(z.cc(tn, isC), o.IU(tn, kpn, d.data, d.cb));
 		if (cDelWithRng === c) return cb(z.cc(tn, isC), o.delWithRng({ tn, rng, cons }));
-		if (cDel === c) return cb(z.cc(tn, isC), o.del(tn, d.kpv));
+		if (cDel === c) return cb(z.cc(tn, isC), o.del({ tn, key: d.kpv }));
 		if (cTrunc === c) return cb(z.CM.trancC(tn), o.truncate({ tn }));
 		if (cCreateOB === c) return o.cs({ tn, kpn, isAI: d.isAI });
 		if (cDelOB === c) return cb(z.CM.cc(), o.ds(tn));
