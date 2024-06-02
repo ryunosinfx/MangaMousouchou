@@ -13,6 +13,7 @@ export class BinaryData extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(BinaryData);
 	static getAll = async (conf) => await ORMbase.getAll(BinaryData, conf);
+	static delete = async (id) => await ORMbase.delete(BinaryData, id);
 	static update = async (id, data, meta, createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(BinaryData, { id, data, meta, createTime, user }, true);
 	static load = async (id) => await new BinaryData(id).loadToSelf(id);

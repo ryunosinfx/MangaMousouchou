@@ -1,1 +1,1 @@
-export const ID_DELIMITER = '_';
+export const ID_DELIMITER = '.';

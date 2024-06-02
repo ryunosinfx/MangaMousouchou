@@ -1,5 +1,6 @@
 import { Vw } from '../libs/Vw.js';
 import { TweetTextEditor } from './TweetTextEditor.js';
+import { TweetManager } from '../services/logic/TweetManager.js';
 export class TweetMenu {
 	static editor = new TweetTextEditor();
 	static elms = null;
@@ -20,6 +21,7 @@ export class TweetMenu {
 			TweetMenu.elms = { p, edit };
 			Vw.ael(p, 'click', () => TweetMenu.hide());
 			Vw.ael(edit, 'click', () => TweetMenu.showTextEditor());
+			Vw.ael(deleteTweet, 'click', () => TweetMenu.deleteTweet());
 		}
 	}
 	static show(menuBtn, tweet, menuBtnParent) {
@@ -43,5 +45,11 @@ export class TweetMenu {
 		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
 		TweetMenu.editingTweet = TweetMenu.currentTweet;
 		TweetMenu.editor.open(TweetMenu.editingTweet, TweetMenu.menuBtnParent);
+	}
+	static async deleteTweet() {
+		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
+		if (!confirm('削除しますか？')) return;
+		await TweetManager.deleteTweet(TweetMenu.currentTweet);
+		TweetMenu.hide();
 	}
 }

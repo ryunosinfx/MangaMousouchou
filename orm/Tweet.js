@@ -21,6 +21,7 @@ export class Tweet extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(Tweet);
 	static getAll = async (conf) => await ORMbase.getAll(Tweet, conf);
+	static delete = async (id) => await ORMbase.delete(Tweet, id);
 	static update = async (
 		id,
 		replayTweetIds = nullList,

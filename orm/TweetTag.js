@@ -14,6 +14,7 @@ export class TweetTag extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(TweetTag);
 	static getAll = async (conf) => await ORMbase.getAll(TweetTag, conf);
+	static delete = async (id) => await ORMbase.delete(TweetTag, id);
 	static update = async (id, name = '', order = 0, categories = nullList, createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(TweetTag, { id, name, order, categories, createTime, user }, true);
 	static load = async (id) => await new TweetTag(id).loadToSelf(id);

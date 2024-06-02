@@ -101,6 +101,10 @@ export class ORMbase {
 	async getAllKeys(prefix = '') {
 		return ORMbase.flatenData(await this.ia.getAll(undefined, undefined, true, prefix));
 	}
+	static async delete(c, id) {
+		console.log(c.ia);
+		return await c.ia.delete(id);
+	}
 	async del(id) {
 		await this.init();
 		return await this.ia.delete(id);

@@ -19,6 +19,7 @@ export class TweetValue extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(TweetValue);
 	static getAll = async (conf) => await ORMbase.getAll(TweetValue, conf);
+	static delete = async (id) => await ORMbase.delete(TweetValue, id);
 	static update = async (
 		id,
 		parentTweetId = '',

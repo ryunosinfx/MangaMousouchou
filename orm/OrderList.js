@@ -20,6 +20,7 @@ export class OrderList extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(OrderList);
 	static getAll = async (conf) => await ORMbase.getAll(OrderList, conf);
+	static delete = async (id) => await ORMbase.delete(OrderList, id);
 	static update = async (
 		id,
 		tweetIdList = nullList,

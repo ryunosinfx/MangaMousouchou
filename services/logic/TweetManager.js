@@ -1,6 +1,7 @@
 import { WORKER_TYPE } from '../../const/WorkerType.js';
 import { AddTweet } from '../../const/jobs/AddTweet.js';
 import { EditTweet } from '../../const/jobs/EditTweet.js';
+import { DeleteTweet } from '../../const/jobs/DeleteTweet.js';
 import { Util } from '../../libs/Util.js';
 import { BinUtil } from '../../libs/BinaryUtil.js';
 import { WorkerManager } from '../../worker/WorkerManager.js';
@@ -36,6 +37,23 @@ export class TweetManager {
 		await Tweet.update(obj.id, obj.replayTweetIds, obj.typeId, obj.tagIds, obj.state, obj.createTime);
 		const vid = obj.id + ID_DELIMITER + Util.getNowAsU();
 		await TweetValue.update(vid, obj.id, obj.text, obj.binaryDataIds);
+	}
+	static async deleteTweet(tw, conf) {
+		const a = TweetManager.a;
+		a.id = tw.id;
+		a.conf = conf;
+		a.type = DeleteTweet.name;
+		console.log('deleteTweet tw.text :' + tw.text + ' /tw.id:' + tw.id);
+		const dd = BinUtil.s2u(JSON.stringify(a));
+		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+	}
+	static async deleteTweetExec(obj) {
+		console.log('deleteTweetExec obj:', obj);
+		await Tweet.delete(obj.id);
+		const ids = await TweetValue.getAll({ isKeyOnly: true, prefix: obj.id });
+		const promises = [];
+		for (const id of ids) promises.push(TweetValue.delete(id));
+		await Promise.all(promises);
 	}
 	static async loadTweets(cond = {}) {
 		const t = await Tweet.getAll(cond);

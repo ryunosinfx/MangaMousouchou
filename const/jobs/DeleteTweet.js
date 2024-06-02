@@ -1,4 +1,5 @@
+import { TweetManager } from '../../services/logic/TweetManager.js';
 export class DeleteTweet {
 	static name = 'DeleteTweet';
-	static async do(obj) {}
+	static do = async (obj) => await TweetManager.deleteTweetExec(obj);
 }
