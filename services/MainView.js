@@ -24,8 +24,8 @@ export class MainView {
 		this.buildTitle(header);
 		this.buildMenu(header);
 		const contents = Vw.div(frame, { class: 'Contents', id: 'Contents' });
-		this.buildPages(contents);
 		this.buildEditor(contents);
+		this.buildPages(contents);
 		// this.TextEditor.setOutputElm(this.PagesView.getFormattedElm(), this.PagesView.getJsonElm());
 		const footer = Vw.div(frame, { class: 'footer', id: 'footer' });
 		this.callbacks.push((parsed) => {
