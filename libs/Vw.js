@@ -40,6 +40,8 @@ export class Vw {
 		sty && typeof sty === 'object' ? Object.keys(sty).map((k) => (e.style[Vw.cnvtGebav2Camel(k)] = sty[k])) : sty;
 	static sA = (e, k, v) => (e.style[Vw.cnvtGebav2Camel(k)] = v);
 	static gS = (e, k) => e.style[Vw.cnvtGebav2Camel(k)];
+	static gCS = (e) => wi.getComputedStyle(e);
+	static gCSv = (e, k) => Vw.gCS(e).getPropertyValue(k);
 	static tS = (e, k, v, v2) => (e.style[Vw.cnvtGebav2Camel(k)] = e.style[Vw.cnvtGebav2Camel(k)] === v ? v2 : v);
 	static click = (e, cb) => Vw.ael(e, 'click', cb);
 	static change = (e, cb) => Vw.ael(e, 'change', cb);
