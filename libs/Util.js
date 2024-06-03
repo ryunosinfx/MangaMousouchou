@@ -19,7 +19,7 @@ export class Util {
 		return BinUtil.a2U(u32a1.buffer);
 	};
 	static cU2N = (b64U) => {
-		const a = new Uint32Array(new Uint8Array(BinUtil.U2a(b64U)).buffer);
+		const a = b64U ? new Uint32Array(new Uint8Array(BinUtil.U2a(b64U)).buffer) : new Uint32Array(1);
 		const b = a.length > 1 ? a[0] * u32 + a[1] : a[0];
 		// console.log('cU2N b64U:' + b64U + ' ' + b + ' /' + a.length, a);
 		return a.length > 1 ? a[0] * u32 + a[1] : a[0];
