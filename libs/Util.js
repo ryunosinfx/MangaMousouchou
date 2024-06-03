@@ -11,6 +11,7 @@ export class Util {
 	static sleep = (s = 100) => new Promise((r) => setTimeout(() => r(), s));
 	static random = (multiple) => Math.floor(Math.random() * multiple);
 	static mkUUID = () => self.crypto.randomUUID();
+	static mkUUIDb64U = () => BinUtil.u2U(BinUtil.h2u(Util.mkUUID().split('-').join('')));
 	static getNowAsU = () => {
 		const now = Date.now();
 		u32a1[0] = Math.floor(now / u32);

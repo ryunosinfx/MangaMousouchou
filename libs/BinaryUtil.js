@@ -74,6 +74,7 @@ export class BinUtil {
 	static u2h = (u) => Array.prototype.map.call(u, (x) => x.toString(16).padStart(2, '0')).join(N);
 	static s2U = (s) => BinUtil.B2U(BinUtil.a2B(BinUtil.s2u(s).buffer));
 	static a2U = (a) => BinUtil.B2U(BinUtil.a2B(a));
+	static u2U = (u) => BinUtil.B2U(BinUtil.a2B(u.buffer));
 	static B2a = (B) => BinUtil.b2u(wi.atob(B));
 	static U2a = (U) => BinUtil.B2a(BinUtil.U2B(U));
 	static U2s = (U) => BinUtil.u2s(B.u8(BinUtil.B2a(BinUtil.U2B(U))));
