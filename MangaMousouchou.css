@@ -61,3 +61,44 @@ div.TweetMenuPannelBtn {
 	color: #aaa;
 	background-color: #333;
 }
+div.MainMenu {
+	display: flex;
+	flex-flow: row wrap;
+	color: #aaa;
+	font-weight: bold;
+	margin-left: 10px;
+}
+div.MainMenu > div {
+	color: #aaa;
+	margin: 1px;
+	padding: 2px 5px;
+	border-radius: 5px;
+	font-size: 80%;
+	background-color: #333;
+}
+div.TweetRow {
+	height: 1.5em;
+}
+div.Editor {
+	padding: 5px;
+}
+textarea.maineditor {
+	width: calc(100% - 10px);
+	border: 0 black solid;
+}
+span.textCounter {
+	display: inline-block;
+	color: #aaa;
+	width: 3em;
+	text-align: right;
+	padding-right: 10px;
+}
+div.BLUE {
+	background-color: rgb(131, 180, 255);
+}
+div.YELLOW {
+	background-color: rgb(255, 247, 131);
+}
+div.RED {
+	background-color: rgb(255, 131, 131);
+}
