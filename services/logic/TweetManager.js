@@ -13,7 +13,7 @@ export class TweetManager {
 	static defaultConf = {};
 	static a = {};
 	static map = new Map();
-	static async postTweet(msg, id = Util.mkUUID(), conf = TweetManager.defaultConf) {
+	static async postTweet(msg, id = Util.mkUUIDb64U(), conf = TweetManager.defaultConf) {
 		const a = TweetManager.a;
 		a.text = msg;
 		a.id = id;
