@@ -1,4 +1,5 @@
 import { idbw } from '../../libs/ESIndexeddbWrapper.js';
+import { Util } from '../../libs/Util.js';
 export const nullList = [];
 export class ORMbase {
 	static prop = ['data'];
@@ -14,7 +15,7 @@ export class ORMbase {
 		this._props = props.prop;
 	}
 	setSelf(self) {
-		thid.self = self;
+		this.self = self;
 	}
 	static flatenDataExec = (r) => {
 		if (!r || !r.data) return r;
@@ -29,7 +30,7 @@ export class ORMbase {
 	static flatenData = (r) => {
 		console.log('flatData A', JSON.stringify(r));
 		if (Array.isArray(r)) for (const c of r) ORMbase.flatenDataExec(c);
-		else ORMbase.flatenDataExec(c);
+		else ORMbase.flatenDataExec(r);
 		console.log('flatData B', r);
 		return r;
 	};
@@ -72,12 +73,15 @@ export class ORMbase {
 	}
 	async load(id) {
 		const d = ORMbase.flatenData(await this.get(id));
+		d.id = id;
+		if (!d) return console.log('load id:' + id);
 		for (const key of this._props) this[key] = d[key];
 		return d;
 	}
 	async loadToSelf(id) {
+		this.id = id;
 		const a = await this.load(id);
-		for (const key of a) delete a[key];
+		Util.clearObj(a);
 		return this;
 	}
 	async put(id, data) {
