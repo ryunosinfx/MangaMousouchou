@@ -40,4 +40,8 @@ export class Util {
 		l.pop();
 		return l.join('/');
 	};
+	static async copyToClipBoard(text, callback) {
+		await navigator.clipboard.writeText(text);
+		if (typeof callback === 'function') callback();
+	}
 }
