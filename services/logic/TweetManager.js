@@ -75,4 +75,21 @@ export class TweetManager {
 		console.log('loadTweets t:', t);
 		return t;
 	}
+	static async loadTweet(tid) {
+		const tw = await Tweet.load(tid);
+		const v = await TweetValue.getAll({ prefix: tid });
+		const map = TweetManager.map;
+		map.clear();
+		for (const tv of v) {
+			const vid = tv.id;
+			const tid = tv.parentTweetId;
+			const current = Util.cU2N(vid.split(ID_DELIMITER)[1]);
+			const asNew = map.has(tid) && map.get(tid).id ? Util.cU2N(map.get(tid).id.split(ID_DELIMITER)[1]) : null;
+			!asNew || current > asNew ? map.set(tid, tv) : null;
+		}
+		v.splice(0, v.length);
+		tw.value = map.get(tid);
+		console.log('loadTweet tw:', tw);
+		return tw;
+	}
 }

@@ -1,21 +1,27 @@
 import { Vw } from '../libs/Vw.js';
 import { Util } from '../libs/Util.js';
 import { TweetMenu } from './TweetMenu.js';
+import { TweetHistryLine } from './TweetHistryLine.js';
+import { TweetManager } from '../services/logic/TweetManager.js';
 export class TweetView {
 	constructor(parentElm) {
 		this.parentElm = parentElm;
 		this.elm = null;
-		this.t = null;
+		this.tw = null;
 		this.menu = null;
 		this.nodes = [];
 	}
-	set(t) {
+	async resetByTid(tid) {
+		const tw = await TweetManager.loadTweet(tid);
+		this.set(tw);
+	}
+	set(tw) {
 		if (!this.elm) this.build();
 		const nodes = this.nodes;
 		nodes.splice(0, nodes.length);
-		const v = t.value;
-		const { frame, header, creatTime, updateTime, type, state, menu, main } = this.elm;
-		Vw.sT(creatTime, Util.convertTimeToFromat(t.createTime));
+		const v = tw.value;
+		const { frame, header, creatTime, updateTime, type, state, menu, main, tweetHistryLine } = this.elm;
+		Vw.sT(creatTime, Util.convertTimeToFromat(tw.createTime));
 		Vw.sT(updateTime, Util.convertTimeToFromat(v.createTime));
 		const rows = v.text.split(/\r\n|\n/g);
 		const matches = main.querySelectorAll('div.TweetRow');
@@ -28,12 +34,18 @@ export class TweetView {
 		}
 		for (let i = 0; i < rl; i++) Vw.sT(nodes[i], rows[i]);
 		for (let i = rl; i < ml; i++) Vw.rm(nodes[i]);
-		Vw.sT(state, t.state);
-		Vw.sT(type, t.type);
+		Vw.sT(state, tw.state);
+		Vw.sT(type, tw.type);
 		Vw.sT(menu, '三');
-		this.t = t;
+		this.tw = tw;
 		this.menu = menu;
+		tweetHistryLine.setUp(tw.id, this);
+		console.log('TweetView tw.id:' + tw.id);
+		if (!tweetHistryLine.isHidden) tweetHistryLine.show();
 		nodes.splice(0, nodes.length);
+	}
+	getCurrentTweet() {
+		return this.tw;
 	}
 	clear() {
 		Vw.cT(this.elm.creatTime);
@@ -53,9 +65,13 @@ export class TweetView {
 		const state = Vw.div(header, { class: 'TweetState' });
 		const menu = Vw.div(header, { class: 'TweetMenuBtn' });
 		const main = Vw.div(frame, { class: 'TweetMain' });
-		Vw.ael(menu, 'click', (e) => TweetMenu.show(this.menu, this.t, frame) && e.stopImmediatePropagation());
-
-		this.elm = { frame, header, creatTime, updateTime, type, state, menu, main };
+		const tweetHistryLine = new TweetHistryLine(frame);
+		Vw.ael(
+			menu,
+			'click',
+			(e) => TweetMenu.show(this.menu, this.tw, frame, tweetHistryLine) && e.stopImmediatePropagation()
+		);
+		this.elm = { frame, header, creatTime, updateTime, type, state, menu, main, tweetHistryLine };
 	}
 	edit;
 }

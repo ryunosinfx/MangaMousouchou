@@ -28,7 +28,6 @@ export class TweetTextEditor {
 		const v = t.value;
 		const tid = this.t.id;
 		const r = SessonStorageManager.get(tid);
-		console.log('TweetTextEditor open r:', r);
 		Vw.a(parentElm, this.editor);
 		const hasSessionData = r && r.value && r.value.text;
 		this.maineditor.value = hasSessionData ? r.value.text : v.text;

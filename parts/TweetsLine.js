@@ -1,7 +1,7 @@
 import { TweetOrderTypes } from '../const/TweetOrderTypes.js';
 import { Vw } from '../libs/Vw.js';
 import { TweetView } from './TweetView.js';
-export class TweetLine {
+export class TweetsLine {
 	constructor(parentElm, orderType = TweetOrderTypes.createTimeDESC) {
 		this.lineParent = Vw.div(parentElm, {});
 		this.line = [];
@@ -28,7 +28,6 @@ export class TweetLine {
 				io.push(id);
 			}
 			io.sort();
-			console.log('TweetLine refresh B l:' + l + '/io:' + io, ts);
 			if (this.orderType === TweetOrderTypes.createTimeDESC) io.reverse();
 			for (const id of io) l.push(map.get(id));
 		}
@@ -39,7 +38,6 @@ export class TweetLine {
 		const len = l.length;
 		const tvs = this.tweetViews;
 		const tLen = tvs.length;
-		console.log('TweetLine build len:' + len + '/tLen:' + tLen, this.line);
 		for (let i = 0; i < len; i++) {
 			if (i >= tLen) tvs.push(new TweetView(this.lineParent));
 			const tv = tvs[i];

@@ -1,12 +1,14 @@
 import { Vw } from '../libs/Vw.js';
 import { TweetTextEditor } from './TweetTextEditor.js';
 import { TweetManager } from '../services/logic/TweetManager.js';
+import { LifeCycle } from '../services/manager/LifeCycle.js';
 export class TweetMenu {
 	static editor = new TweetTextEditor();
 	static elms = null;
 	static currentTweet = null;
 	static editingTweet = null;
 	static menuBtnParent = null;
+	static tweetHistryLine = null;
 	static init(parent) {
 		const elms = TweetMenu.elms;
 		if (!elms) {
@@ -22,9 +24,11 @@ export class TweetMenu {
 			Vw.ael(p, 'click', () => TweetMenu.hide());
 			Vw.ael(edit, 'click', () => TweetMenu.showTextEditor());
 			Vw.ael(deleteTweet, 'click', () => TweetMenu.deleteTweet());
+			Vw.ael(showHistory, 'click', () => TweetMenu.showHistory());
 		}
 	}
-	static show(menuBtn, tweet, menuBtnParent) {
+	static show(menuBtn, tweet, menuBtnParent, tweetHistryLine) {
+		TweetMenu.tweetHistryLine = tweetHistryLine;
 		console.log('TweetMenu show A ', TweetMenu.editor);
 		TweetMenu.editor.hide();
 		if (!menuBtn || !tweet) return;
@@ -50,6 +54,13 @@ export class TweetMenu {
 		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
 		if (!confirm('削除しますか？')) return;
 		await TweetManager.deleteTweet(TweetMenu.currentTweet);
+		await LifeCycle.refresh();
+		TweetMenu.hide();
+	}
+	static showHistory() {
+		if (!TweetMenu.currentTweet || !TweetMenu.tweetHistryLine) return;
+		TweetMenu.editingTweet = TweetMenu.currentTweet;
+		TweetMenu.tweetHistryLine.show();
 		TweetMenu.hide();
 	}
 }
