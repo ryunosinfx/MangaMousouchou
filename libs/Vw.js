@@ -1,5 +1,6 @@
 const wi = globalThis,
-	N = '';
+	N = '',
+	D = 'disabled';
 // console.log('Vw wi', wi);
 export class Vw {
 	static isNotBrowser = wi.document ? false : true;
@@ -39,6 +40,12 @@ export class Vw {
 	static sS = (e, sty = {}) =>
 		sty && typeof sty === 'object' ? Object.keys(sty).map((k) => (e.style[Vw.cnvtGebav2Camel(k)] = sty[k])) : sty;
 	static sA = (e, k, v) => (e.style[Vw.cnvtGebav2Camel(k)] = v);
+	static disable = (e) => {
+		e[D] = true;
+	};
+	static enable = (e) => {
+		e[D] = false;
+	};
 	static gS = (e, k) => e.style[Vw.cnvtGebav2Camel(k)];
 	static gCS = (e) => wi.getComputedStyle(e);
 	static gCSv = (e, k) => Vw.gCS(e).getPropertyValue(k);
