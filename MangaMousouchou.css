@@ -131,3 +131,48 @@ div.YELLOW {
 div.RED {
 	background-color: rgb(255, 131, 131);
 }
+div.inputImageArea {
+	display: flex;
+	width: 640px;
+	flex-wrap: wrap;
+}
+div.TwwetImageEdit {
+	min-height: 300px;
+}
+div.inputImageArea > div.TwwetImageEdit:first-child {
+	background-color: aqua;
+}
+div.inputImageArea > div.TwwetImageEdit:nth-child(2) {
+	background-color: aquamarine;
+}
+div.inputImageArea > div.TwwetImageEdit:nth-child(3) {
+	background-color: lightcyan;
+}
+div.inputImageArea > div.TwwetImageEdit:nth-child(4) {
+	background-color: lightskyblue;
+}
+div.TwwetImageEditHeader {
+	width: 320px;
+	display: flex;
+	justify-content: space-between;
+}
+div.TwwetImageEditHeader > span.stat {
+	display: block;
+	font-size: 60%;
+}
+div.TwwetImageEditHeader > span.stat > span.stat {
+	margin: 2px;
+}
+div.TwwetImage {
+	width: 310px;
+	font-size: 60%;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	min-height: 310px;
+	justify-content: center;
+	padding: 5px;
+}
+div.TwwetImage > img {
+	display: block;
+}
