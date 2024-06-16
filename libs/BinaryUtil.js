@@ -36,7 +36,7 @@ export class BinUtil {
 	static u2sSub = (u, s, e) => td.decode(u.subarray(s, e));
 	static a2s = (a) => td.decode(B.u8(a));
 	static a2B = (i) => wi.btoa(BinUtil.u2b(B.u8(i.buffer ? i.buffer : i)));
-	static u2B = (u) => wi.bta(BinUtil.u2b(u));
+	static u2B = (u) => wi.btoa(BinUtil.u2b(u));
 	static u2I(u) {
 		const f = B.u8(4),
 			l = u.length,
