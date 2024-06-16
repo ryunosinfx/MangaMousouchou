@@ -11,6 +11,7 @@ export class Pickuphistory extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(Pickuphistory);
 	static getAll = async (conf) => await ORMbase.getAll(Pickuphistory, conf);
+	static loads = async (ids) => await ORMbase.loads(Pickuphistory, ids);
 	static delete = async (id) => await ORMbase.delete(Pickuphistory, id);
 	static update = async (id, createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(Pickuphistory, { id, createTime, user }, true);

@@ -18,6 +18,7 @@ export class Title extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(Title);
 	static getAll = async (conf) => await ORMbase.getAll(Title, conf);
+	static loads = async (ids) => await ORMbase.loads(Title, ids);
 	static delete = async (id) => await ORMbase.delete(Title, id);
 	static update = async (
 		id,

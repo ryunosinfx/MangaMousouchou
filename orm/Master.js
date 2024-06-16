@@ -14,6 +14,7 @@ export class Master extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(Master);
 	static getAll = async (conf) => await ORMbase.getAll(Master, conf);
+	static loads = async (ids) => await ORMbase.loads(Master, ids);
 	static delete = async (id) => await ORMbase.delete(Master, id);
 	static update = async (id, name = '', data, type = '', createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(Master, { id, name, data, type, createTime, user }, true);

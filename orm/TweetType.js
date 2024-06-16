@@ -12,6 +12,7 @@ export class TweetType extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(TweetType);
 	static getAll = async (conf) => await ORMbase.getAll(TweetType, conf);
+	static loads = async (ids) => await ORMbase.loads(TweetType, ids);
 	static delete = async (id) => await ORMbase.delete(TweetType, id);
 	static update = async (id, name = '', createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(TweetType, { id, name, createTime, user }, true);

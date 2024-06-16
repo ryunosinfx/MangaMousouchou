@@ -20,10 +20,12 @@ export class ORMbase {
 	static flatenDataExec = (r) => {
 		if (!r || !r.data) return r;
 		const d = r.data;
+		if (d && typeof d === 'object' && d.buffer) return;
 		delete r.data;
 		for (const k in d) {
 			const v = d[k];
 			r[k] = v;
+			console.log('flatenDataExec d:', d);
 			delete d[k];
 		}
 	};
@@ -73,8 +75,8 @@ export class ORMbase {
 	}
 	async load(id) {
 		const d = ORMbase.flatenData(await this.get(id));
-		d.id = id;
 		if (!d) return console.log('load id:' + id);
+		d.id = id;
 		for (const key of this._props) this[key] = d[key];
 		return d;
 	}
@@ -84,6 +86,7 @@ export class ORMbase {
 		Util.clearObj(a);
 		return this;
 	}
+	static loads = async (c, ids) => ORMbase.flatenData(await c.ia.getAll(0, undefined, false, ids));
 	async put(id, data) {
 		await this.init();
 		return await this.ia.put(id, data);

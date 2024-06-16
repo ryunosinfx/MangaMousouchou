@@ -462,15 +462,15 @@ class IC {
 				endC = isValidCB ? cnt : ofst + cnt,
 				l = [],
 				r = ob.openCursor(d ? d : void 0),
-				kPxL = kPx ? kPx.length : 0;
+				kPxL = kPx ? kPx.length : 0,
+				isKPxArray = Array.isArray(kPx);
 			let rC = 0;
 			r.onsuccess = (e) => {
 				const c = e.target.result;
 				if (c) {
-					if (kPx && c.key.substring(0, kPxL) !== kPx) {
-						c.continue();
-						return;
-					}
+					if (isKPxArray) {
+						if (!kPx.includes(c.key)) return c.continue();
+					} else if (kPx && c.key.substring(0, kPxL) !== kPx) return c.continue();
 					const v = isKO ? c.key : c.value;
 					if (isValidCB && !cb(v)) return c.continue();
 					if (isOnLimit)

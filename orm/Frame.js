@@ -34,6 +34,7 @@ export class Frame extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(Frame);
 	static getAll = async (conf) => await ORMbase.getAll(Frame, conf);
+	static loads = async (ids) => await ORMbase.loads(Frame, ids);
 	static delete = async (id) => await ORMbase.delete(Frame, id);
 	static update = async (
 		id,

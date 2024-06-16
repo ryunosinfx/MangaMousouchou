@@ -12,6 +12,7 @@ export class DataVersion extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(DataVersion);
 	static getAll = async (conf) => await ORMbase.getAll(DataVersion, conf);
+	static loads = async (ids) => await ORMbase.loads(DataVersion, ids);
 	static delete = async (id) => await ORMbase.delete(DataVersion, id);
 	static update = async (id, data, createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(DataVersion, { id, data, createTime, user }, true);

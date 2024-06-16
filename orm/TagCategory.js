@@ -14,6 +14,7 @@ export class TagCategory extends ORMbase {
 	}
 	static init = async () => await ORMbase.init(TagCategory);
 	static getAll = async (conf) => await ORMbase.getAll(TagCategory, conf);
+	static loads = async (ids) => await ORMbase.loads(TagCategory, ids);
 	static delete = async (id) => await ORMbase.delete(TagCategory, id);
 	static update = async (id, name = '', order = 0, detail = '', createTime = Date.now(), user = 'root') =>
 		await ORMbase.update(TagCategory, { id, name, order, detail, createTime, user }, true);
