@@ -1,4 +1,4 @@
-import { BinUtil } from './BinaryUtil.js';
+import { BinUtil, Hasher } from './BinaryUtil.js';
 const cb = () => {};
 export class FileUtil {
 	static currentReaders = [];
@@ -57,13 +57,15 @@ export class FileUtil {
 		ancker.click();
 		setTimeout(() => document.body.removeChild(ancker));
 	}
-	static imageLoad(img, dataUri) {
+	static imageLoad(img, dataUrl) {
 		return new Promise((resolev) => {
 			img.onload = (e) => resolev();
-			img.src = dataUri;
+			img.onerror = (e) => console.warn(e + '', e);
+			img.src = dataUrl;
 		});
 	}
-	static mkDataURL = (type, u8a) => `data:${type}:base64,${BinUtil.u2B(u8a)}`;
+	static mkDataURL = (type, u8a) => `data:${type};base64,${BinUtil.u2B(u8a)}`;
 	static getU8AfromDataURL = (durl = '') =>
 		durl.indexOf(',') > 0 ? new Uint8Array(BinUtil.B2a(durl.split(',')[1])) : durl;
+	static mkHash = async (durl) => BinUtil.a2U(await Hasher.d(FileUtil.getU8AfromDataURL(durl), 10, 'sha-512', true));
 }
