@@ -27,7 +27,7 @@ export class MainView {
 		this.buildEditor(contents);
 		this.buildPages(contents);
 		// this.TextEditor.setOutputElm(this.PagesView.getFormattedElm(), this.PagesView.getJsonElm());
-		const footer = Vw.div(frame, { class: 'footer', id: 'footer' });
+		Vw.div(frame, { class: 'footer', id: 'footer' });
 		this.callbacks.push((parsed) => {
 			this.PagesView.calc(parsed);
 		});
@@ -38,12 +38,12 @@ export class MainView {
 	}
 	buildTitle(header) {
 		const titleFrame = Vw.div(header, { class: 'titleFrame', id: 'titleFrame' });
-		const title = Vw.span(titleFrame, {
+		Vw.span(titleFrame, {
 			class: 'Editor',
 			id: 'Editor',
 			text: AppTitle,
 		});
-		const v = Vw.span(titleFrame, { class: 'version', id: 'version', text: ` v${VERSION}` });
+		Vw.span(titleFrame, { class: 'version', id: 'version', text: ` v${VERSION}` });
 	}
 	buildMenu(header) {
 		const menu = Vw.div(header, { class: 'menu', id: 'menu' });

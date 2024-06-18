@@ -24,7 +24,7 @@ export class TweetManager {
 		a.imageDatas = imageDatas;
 		console.log('postTweet msg:' + msg + ' /id:' + id);
 		const dd = BinUtil.s2u(JSON.stringify(a));
-		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+		await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
 	static async editTweet(tw, conf) {
 		const a = TweetManager.a;
@@ -33,7 +33,7 @@ export class TweetManager {
 		a.type = EditTweet.name;
 		console.log('editTweet tw.text :' + tw.text + ' /tw.id:' + tw.id);
 		const dd = BinUtil.s2u(JSON.stringify(a));
-		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+		await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
 	static async postTweetExec(tw) {
 		console.log('postTweetExec obj:', tw);
@@ -49,7 +49,7 @@ export class TweetManager {
 		a.type = DeleteTweet.name;
 		console.log('deleteTweet tw.text :' + tw.text + ' /tw.id:' + tw.id);
 		const dd = BinUtil.s2u(JSON.stringify(a));
-		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+		await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
 	static async deleteTweetExec(obj) {
 		console.log('deleteTweetExec obj:', obj);

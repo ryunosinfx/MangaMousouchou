@@ -16,10 +16,10 @@ export class TweetValueManger {
 		a.type = DeleteTweetValue.name;
 		console.log('deleteTweetValue tv.text :' + tv.text + ' /tv.id:' + tv.id);
 		const dd = BinUtil.s2u(JSON.stringify(a));
-		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
+		await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
 	static async deleteTweetValueExec(obj) {
 		console.log('deleteTweetExec obj:', obj);
-		const ids = await TweetValue.delete(obj.id);
+		await TweetValue.delete(obj.id);
 	}
 }

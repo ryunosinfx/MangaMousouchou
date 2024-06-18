@@ -24,6 +24,8 @@ export class TweetView {
 		nodes.splice(0, nodes.length);
 		const v = tw.value;
 		const { frame, header, creatTime, updateTime, type, state, menu, main, tweetHistryLine } = this.elm;
+		if (state) Vw.aC(frame, state);
+		if (state) Vw.aC(header, state);
 		Vw.sT(creatTime, Util.convertTimeToFromat(tw.createTime));
 		Vw.sT(updateTime, Util.convertTimeToFromat(v.createTime));
 		const rows = v.text.split(/\r\n|\n/g);

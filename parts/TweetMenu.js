@@ -22,6 +22,8 @@ export class TweetMenu {
 			const deleteTweet = Vw.div(p, { text: 'delete', class: 'TweetMenuPannelBtn' });
 			TweetMenu.elms = { p, edit };
 			Vw.ael(p, 'click', () => TweetMenu.hide());
+			Vw.ael(addBefore, 'click', () => TweetMenu.hide());
+			Vw.ael(addAfter, 'click', () => TweetMenu.hide());
 			Vw.ael(edit, 'click', () => TweetMenu.showTextEditor());
 			Vw.ael(deleteTweet, 'click', () => TweetMenu.deleteTweet());
 			Vw.ael(showHistory, 'click', () => TweetMenu.showHistory());

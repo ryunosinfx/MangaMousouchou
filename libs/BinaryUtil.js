@@ -4,10 +4,10 @@ const te = new TextEncoder('utf-8'),
 	Mc = (n) => M.ceil(n),
 	Ma = (n) => M.abs(n),
 	J = JSON,
-	Jp = (a) => J.parse(a),
+	// Jp = (a) => J.parse(a),
 	Js = (a) => J.stringify(a),
 	w = (...a) => console.warn(a),
-	io = (...a) => console.info(a),
+	// io = (...a) => console.info(a),
 	err = (...a) => console.error(a),
 	crv = (t) => crypto.getRandomValues(t),
 	isS = (s) => typeof s === 'string',
@@ -136,7 +136,7 @@ export class BinUtil {
 	static N2u(n) {
 		let a = n;
 		const p = BinUtil.a;
-		p.splice(0, r.length);
+		p.splice(0, p.length);
 		while (Ma(a) > 0) {
 			p.unshift(a % 256);
 			a = a >> 8;
@@ -144,7 +144,7 @@ export class BinUtil {
 		const l = p.length,
 			u = B.u8(l);
 		for (let i = 0; i < l; i++) u[i] = p[i];
-		p.splice(0, r.length);
+		p.splice(0, p.length);
 		return u;
 	}
 	static b32a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'.split(N);
@@ -182,7 +182,7 @@ export class BinUtil {
 	static b32e(ab) {
 		const u = B.u8(ab),
 			a = BinUtil.a;
-		a.splice(0, r.length);
+		a.splice(0, a.length);
 		let j = 0,
 			k = 0;
 		for (let i = 0; i < u.length; i++) {
@@ -204,7 +204,7 @@ export class BinUtil {
         ggghhhhh
          */
 		const b32 = a.join(N);
-		a.splice(0, r.length);
+		a.splice(0, a.length);
 		return b32;
 	}
 }
@@ -291,10 +291,10 @@ The Maximum RSA key size is 4096 bits (512 bytes); therefore, the maximum messag
 512 – 66 = 446 Bytes (3568 bits) for SHA-256 OAEP
 512 – 98 = 414 Bytes (3312 bits) for SHA-384 OAEP
 512 – 130 = 382 Bytes (3056 bits) for SHA-512 OAEP
-     * @param {*} base64PublicKey 
-     * @param {*} str 
-     * @param {*} isBase64 
-     * @param {*} keyLen 
+     * @param {*} base64PublicKey key
+     * @param {*} str msg
+     * @param {*} isBase64 is true Base64
+     * @param {*} keyLen length of key
      */
 	static restrictRsaOaep = {
 		RSA2048_SHA256: 190, //256-66

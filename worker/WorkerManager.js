@@ -91,7 +91,7 @@ export class WorkerManager {
 		WorkerManager.bootWorker(workerType, index);
 	}
 	static postMsg(workerType, u8a) {
-		return new Promise(async (resolve) => {
+		const f = async (resolve) => {
 			const a = WorkerManager.a;
 			const c = WorkerManager.workersRoundCounter;
 			const w = WorkerManager.workers.get(workerType);
@@ -117,6 +117,7 @@ export class WorkerManager {
 			console.log('postMsg 2 u8aD:', u8aD);
 			WorkerManager.queue.set(key, resolve);
 			c.set(workerType, index + 1);
-		});
+		};
+		return new Promise(f);
 	}
 }

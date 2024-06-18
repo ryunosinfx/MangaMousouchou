@@ -22,7 +22,7 @@ export class Util {
 		const a = b64U ? new Uint32Array(new Uint8Array(BinUtil.U2a(b64U)).buffer) : new Uint32Array(1);
 		const b = a.length > 1 ? a[0] * u32 + a[1] : a[0];
 		// console.log('cU2N b64U:' + b64U + ' ' + b + ' /' + a.length, a);
-		return a.length > 1 ? a[0] * u32 + a[1] : a[0];
+		return b;
 	};
 	static convertTimeToFromat(unixtime, format = 'yyyy/MM/dd hh:mm:ss.SSS') {
 		const d = new Date(unixtime);

@@ -18,7 +18,7 @@ export class FileUtil {
 			reader.onprogress = (event) => updateProgressCB(event);
 			reader.onabort = (e) => console.log('abort', e) && alert('File read cancelled');
 			reader.onloadstart = (event) => onloadstartCB(event);
-			reader.onload = (event) => resolve(reader.result);
+			reader.onload = () => resolve(reader.result);
 			FileUtil.currentReaders.push(reader);
 			return type === 'ArrayBuffer'
 				? reader.readAsArrayBuffer(file)
@@ -59,7 +59,7 @@ export class FileUtil {
 	}
 	static imageLoad(img, dataUrl) {
 		return new Promise((resolev) => {
-			img.onload = (e) => resolev();
+			img.onload = (e) => resolev(e);
 			img.onerror = (e) => console.warn(e + '', e);
 			img.src = dataUrl;
 		});

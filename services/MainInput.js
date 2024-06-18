@@ -3,7 +3,6 @@ import { TweetManager } from './logic/TweetManager.js';
 import { LifeCycle } from './manager/LifeCycle.js';
 import { TweetEditor } from '../parts/logic/TweetEditor.js';
 import { TweetImageEditor } from '../parts/TweetImageEditor.js';
-import { FileUtil } from '../libs/FileUtil.js';
 export class MainInput {
 	static imageSlots = [];
 	static imageMap = new Map();
@@ -25,7 +24,8 @@ export class MainInput {
 		);
 		Vw.ael(MainInput.maineditor, 'focus', () => TweetEditor.onForcus());
 		Vw.ael(fileForm, 'change', (e) => TweetImageEditor.onLoadImage(e, MainInput));
-		for (const event in callbacks) {
+		for (const cb in callbacks) {
+			console.log(cb);
 		}
 		TweetImageEditor.init(MainInput);
 		TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea);

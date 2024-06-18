@@ -1,5 +1,5 @@
 export class PagesView {
-	calc(parsed) {}
+	calc() {}
 	getFormattedElm() {}
 	getJsonElm() {}
 }

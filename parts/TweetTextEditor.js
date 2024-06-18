@@ -15,6 +15,7 @@ export class TweetTextEditor {
 		for (const cbOBJ in callbacks) {
 			const e = cbOBJ.event;
 			const cb = cbOBJ.func;
+			console.log(e, cb);
 		}
 		Vw.ael(this.maineditor, 'input', () => TweetEditor.refresh(this.editor, this.maineditor, this.countArea));
 		Vw.ael(this.maineditor, 'focus', () => TweetEditor.onForcus());
