@@ -74,7 +74,9 @@ export class ORMbase {
 		await this.put(id, json);
 	}
 	async load(id) {
+		console.log('load id:' + id);
 		const d = ORMbase.flatenData(await this.get(id));
+		console.log('load d:' + d);
 		if (!d) return console.log('load id:' + id);
 		d.id = id;
 		for (const key of this._props) this[key] = d[key];
@@ -82,8 +84,10 @@ export class ORMbase {
 	}
 	async loadToSelf(id) {
 		this.id = id;
+		console.log('loadToSelf id:' + id);
 		const a = await this.load(id);
-		Util.clearObj(a);
+		console.log('loadToSelf a:' + a);
+		if (a) Util.clearObj(a);
 		return this;
 	}
 	static loads = async (c, ids) => ORMbase.flatenData(await c.ia.getAll(0, undefined, false, ids));
@@ -96,7 +100,9 @@ export class ORMbase {
 		return await this.ia.putByMap(map);
 	}
 	async get(id) {
+		console.log('get id:' + id);
 		await this.init();
+		console.log('get id:' + id);
 		return ORMbase.flatenData(await this.ia.get(id));
 	}
 	static getAll = async (c, conf = ORMbase.defaultConf) =>
