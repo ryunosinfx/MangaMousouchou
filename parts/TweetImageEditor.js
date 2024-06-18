@@ -1,68 +1,50 @@
 import { Vw } from '../libs/Vw.js';
 import { FileUtil } from '../libs/FileUtil.js';
-import { FrameTypes } from '../const/FrameTypes.js';
-import { BinUtil } from '../libs/BinaryUtil.js';
+import { Util } from '../libs/Util.js';
+import { TweetImage } from './TweetImage.js';
 
-const size = 300;
-export class TweetImageEditor {
+export class TweetImageEditor extends TweetImage {
 	constructor(parentElm, c, imgClearCallBack = () => {}) {
+		super(parentElm);
 		this.parentElm = parentElm;
-		this.frame = Vw.div(parentElm, { class: 'TwwetImageEdit' });
-		Vw.aC(this.frame, FrameTypes.NONE);
-		this.header = Vw.div(this.frame, { class: 'TwwetImageEditHeader' });
-		this.statArea = Vw.span(this.header, { class: 'stat' });
-		this.fileName = Vw.span(this.statArea, { class: 'stat' });
-		this.mimeType = Vw.span(this.statArea, { class: 'stat' });
-		this.size = Vw.span(this.statArea, { class: 'stat' });
-		this.byteLength = Vw.span(this.statArea, { class: 'stat' });
 		this.deleteBtn = Vw.btn(this.header, { class: 'btn', text: '☓' });
-		this.imgFrame = Vw.div(this.frame, { class: 'TwwetImage' });
+		this.imageData = {};
 		Vw.ael(this.deleteBtn, 'click', () => {
 			this.delete();
 			imgClearCallBack(this);
 			TweetImageEditor.onRemove(this, c);
 		});
 	}
-	async set(dataUri, fileName, byteLength, mimeType) {
-		Vw.rc(this.imgFrame);
-		const img = new Image();
-		await FileUtil.imageLoad(img, dataUri);
-		BinUtil.d;
-		const w = img.width;
-		const h = img.height;
-		const isToll = w < h;
-		const r = isToll ? w / h : h / w;
-		const nh = isToll ? size : Math.floor(r * size);
-		const nw = isToll ? Math.floor(r * size) : size;
-		img.width = nw;
-		img.height = nh;
-		this.img = img;
-		Vw.sT(this.size, w + 'x' + h);
-		Vw.sT(this.fileName, fileName);
-		Vw.sT(this.mimeType, mimeType);
-		Vw.sT(this.byteLength, byteLength + '');
-		Vw.a(this.imgFrame, img);
-		Vw.rC(this.frame, FrameTypes.NONE);
+	async setData(dataUrl, fileName, byteLength, mimeType, id = '') {
+		await super.setData(dataUrl, fileName, byteLength, mimeType);
+		this.imageData.fileName = fileName;
+		this.imageData.mimeType = mimeType;
+		this.imageData.dataUrl = dataUrl;
+		this.imageData.id = id;
+	}
+	getImageData() {
+		return this.imageData;
 	}
 	delete() {
-		this.img.src = '';
+		super.delete();
 		this.clear();
 	}
 	clear() {
-		Vw.aC(this.frame, FrameTypes.NONE);
-		Vw.rc(this.imgFrame);
+		super.clear();
+		Util.clearObj(this.imageData);
 	}
+	static init = (c) => TweetImage.init(c, TweetImageEditor);
 	static onLoadImage = async (e, c) => {
 		const files = e.target.files;
 		for (const file of files) {
 			const fileName = file.name;
 			const mimeType = file.type;
 			const byteLength = file.size;
-			const dataUri = await FileUtil.readAsDataURL(file);
+			const dataUrl = await FileUtil.readAsDataURL(file);
 			const v = c.imageSlots[c.imgCount];
 			if (c.imgCount >= 4 || !v) break;
 			console.log('onLoadImage c.count:' + c.count, c.imageSlots[0] === v);
-			await v.set(dataUri, fileName, byteLength, mimeType);
+			await v.setData(dataUrl, fileName, byteLength, mimeType);
 			c.imgCount++;
 			if (c.imgCount >= 4) {
 				Vw.disable(c.fileForm);
@@ -80,5 +62,11 @@ export class TweetImageEditor {
 				Vw.enable(c.fileForm);
 				break;
 			}
+	}
+	static getImageDatas(c) {
+		const a = [];
+		const iss = c.imageSlots;
+		for (let i = 0; i < iss.length; i++) a.push(iss[i].getImageData());
+		return a;
 	}
 }

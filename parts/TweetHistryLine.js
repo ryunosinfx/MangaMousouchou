@@ -49,7 +49,7 @@ export class TweetHistryLine {
 		for (let i = 0; i < al; i++) {
 			const c = a[i];
 			const tv = map.get(c);
-			l[i].set(this.frame, tv, al);
+			l[i].setData(this.frame, tv, al);
 		}
 		if (ll > al)
 			for (let i = al; i < ll; i++) {

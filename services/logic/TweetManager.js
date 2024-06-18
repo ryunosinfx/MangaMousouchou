@@ -7,18 +7,21 @@ import { BinUtil } from '../../libs/BinaryUtil.js';
 import { WorkerManager } from '../../worker/WorkerManager.js';
 import { Tweet } from '../../orm/Tweet.js';
 import { TweetValue } from '../../orm/TweetValue.js';
+import { TweetImageManager } from './TweetImageManager.js';
 import { ID_DELIMITER } from '../../const/Delimiters.js';
 
 export class TweetManager {
 	static defaultConf = {};
 	static a = {};
+	static bids = [];
 	static map = new Map();
-	static async postTweet(msg, id = Util.mkUUIDb64U(), conf = TweetManager.defaultConf) {
+	static async postTweet(msg, id = Util.mkUUIDb64U(), imageDatas = [], conf = TweetManager.defaultConf) {
 		const a = TweetManager.a;
 		a.text = msg;
 		a.id = id;
 		a.conf = conf;
 		a.type = AddTweet.name;
+		a.imageDatas = imageDatas;
 		console.log('postTweet msg:' + msg + ' /id:' + id);
 		const dd = BinUtil.s2u(JSON.stringify(a));
 		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
@@ -32,11 +35,12 @@ export class TweetManager {
 		const dd = BinUtil.s2u(JSON.stringify(a));
 		const bb = await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
-	static async postTweetExec(obj) {
-		console.log('postTweetExec obj:', obj);
-		await Tweet.update(obj.id, obj.replayTweetIds, obj.typeId, obj.tagIds, obj.state, obj.createTime);
-		const vid = obj.id + ID_DELIMITER + Util.getNowAsU();
-		await TweetValue.update(vid, obj.id, obj.text, obj.binaryDataIds);
+	static async postTweetExec(tw) {
+		console.log('postTweetExec obj:', tw);
+		await Tweet.update(tw.id, tw.replayTweetIds, tw.typeId, tw.tagIds, tw.state, tw.createTime);
+		const ids = await TweetImageManager.save(tw.id, tw.imageDatas);
+		const vid = tw.id + ID_DELIMITER + Util.getNowAsU();
+		await TweetValue.update(vid, tw.id, tw.text, ids);
 	}
 	static async deleteTweet(tw, conf) {
 		const a = TweetManager.a;
@@ -50,10 +54,12 @@ export class TweetManager {
 	static async deleteTweetExec(obj) {
 		console.log('deleteTweetExec obj:', obj);
 		await Tweet.delete(obj.id);
-		const ids = await TweetValue.getAll({ isKeyOnly: true, prefix: obj.id });
+		const tvs = await TweetValue.getAll({ prefix: obj.id });
 		const promises = [];
-		for (const id of ids) promises.push(TweetValue.delete(id));
+		for (const tv of tvs) promises.push(TweetValue.delete(tv.id));
+		promises.push(TweetImageManager.deleteByTvs(tvs));
 		await Promise.all(promises);
+		promises.splice(0, promises.length);
 	}
 	static async loadTweets(cond = {}) {
 		const t = await Tweet.getAll(cond);
@@ -68,12 +74,16 @@ export class TweetManager {
 			!asNew || current > asNew ? map.set(tid, tv) : null;
 		}
 		v.splice(0, v.length);
+		const r = [];
 		for (const tw of t) {
-			const tid = tw.id;
-			tw.value = map.get(tid);
+			const v = map.get(tw.id);
+			if (!v) continue;
+			r.push(tw);
+			tw.value = v;
+			tw.imageDatas = await TweetImageManager.loads(v.binaryDataIds);
 		}
-		console.log('loadTweets t:', t);
-		return t;
+		t.splice(0, t.length);
+		return r;
 	}
 	static async loadTweet(tid) {
 		const tw = await Tweet.load(tid);

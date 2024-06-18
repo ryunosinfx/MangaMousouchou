@@ -21,7 +21,7 @@ export class TweetHistoryView {
 		Vw.ael(copyBtn, 'click', () => this.copy());
 		Vw.ael(deleteBtn, 'click', () => this.delete());
 	}
-	set(parentElm, tv, count) {
+	setData(parentElm, tv, count) {
 		this.tv = tv;
 		const nodes = this.nodes;
 		nodes.splice(0, nodes.length);

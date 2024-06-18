@@ -3,6 +3,7 @@ import { Util } from '../libs/Util.js';
 import { TweetMenu } from './TweetMenu.js';
 import { TweetHistryLine } from './TweetHistryLine.js';
 import { TweetManager } from '../services/logic/TweetManager.js';
+import { TweetImage } from './TweetImage.js';
 export class TweetView {
 	constructor(parentElm) {
 		this.parentElm = parentElm;
@@ -10,12 +11,14 @@ export class TweetView {
 		this.tw = null;
 		this.menu = null;
 		this.nodes = [];
+		this.imageSlots = [];
+		this.imgCount = 0;
 	}
 	async resetByTid(tid) {
 		const tw = await TweetManager.loadTweet(tid);
-		this.set(tw);
+		this.setData(tw);
 	}
-	set(tw) {
+	setData(tw) {
 		if (!this.elm) this.build();
 		const nodes = this.nodes;
 		nodes.splice(0, nodes.length);
@@ -38,6 +41,7 @@ export class TweetView {
 		Vw.sT(type, tw.type);
 		Vw.sT(menu, '三');
 		this.tw = tw;
+		TweetImage.load(this, tw.imageDatas);
 		this.menu = menu;
 		tweetHistryLine.setUp(tw.id, this);
 		console.log('TweetView tw.id:' + tw.id);
@@ -54,6 +58,7 @@ export class TweetView {
 		Vw.cT(this.elm.state);
 		Vw.rc(this.elm.main);
 		Vw.rc(this.elm.menu);
+		TweetImage.init(this);
 	}
 	build() {
 		console.log('TweetView build', this.elm);
@@ -65,12 +70,14 @@ export class TweetView {
 		const state = Vw.div(header, { class: 'TweetState' });
 		const menu = Vw.div(header, { class: 'TweetMenuBtn' });
 		const main = Vw.div(frame, { class: 'TweetMain' });
+		this.imageArea = Vw.div(frame, { class: 'inputImageArea' });
 		const tweetHistryLine = new TweetHistryLine(frame);
 		Vw.ael(
 			menu,
 			'click',
 			(e) => TweetMenu.show(this.menu, this.tw, frame, tweetHistryLine) && e.stopImmediatePropagation()
 		);
+		TweetImage.init(this);
 		this.elm = { frame, header, creatTime, updateTime, type, state, menu, main, tweetHistryLine };
 	}
 	edit;

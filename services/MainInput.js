@@ -27,10 +27,7 @@ export class MainInput {
 		Vw.ael(fileForm, 'change', (e) => TweetImageEditor.onLoadImage(e, MainInput));
 		for (const event in callbacks) {
 		}
-		const iss = MainInput.imageSlots;
-		MainInput.imgCount = 0;
-		for (let i = 0; i < iss.length; i++) iss[i].clear();
-		for (let i = iss.length; i < 4; i++) iss.push(new TweetImageEditor(MainInput.imageArea, MainInput));
+		TweetImageEditor.init(MainInput);
 		TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea);
 	}
 	static postNew(ta) {
@@ -38,7 +35,8 @@ export class MainInput {
 			const text = ta.value;
 			if (!text) return;
 			ta.value = '';
-			await TweetManager.postTweet(text);
+			await TweetManager.postTweet(text, undefined, TweetImageEditor.getImageDatas(MainInput));
+			TweetImageEditor.init(MainInput);
 			await LifeCycle.refresh();
 			TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea);
 		};
@@ -46,16 +44,7 @@ export class MainInput {
 	static clear(ta) {
 		return async () => {
 			ta.value = '';
-			const iss = MainInput.imageSlots;
-			for (let i = 0; i < iss.length; i++) iss[i].clear();
-			MainInput.imgCount = 0;
-		};
-	}
-	static postEdit(ta, id) {
-		return async () => {
-			const text = ta.value;
-			await TweetManager.postTweet(text, id);
-			MainInput.clear(ta)();
+			TweetImageEditor.init(MainInput);
 		};
 	}
 }

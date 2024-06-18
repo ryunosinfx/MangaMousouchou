@@ -16,7 +16,6 @@ export class TweetsLine {
 		const io = this.idOrder;
 		map.clear();
 		l.splice(0, l.length);
-
 		if (Array.isArray(order) && this.orderType === TweetOrderTypes.manual) {
 			for (const t of ts) map.set(t.id, t);
 			for (const id of order) l.push(map.get(id));
@@ -41,7 +40,7 @@ export class TweetsLine {
 		for (let i = 0; i < len; i++) {
 			if (i >= tLen) tvs.push(new TweetView(this.lineParent));
 			const tv = tvs[i];
-			tv.set(l[i]);
+			tv.setData(l[i]);
 		}
 		if (tLen > len) for (let i = len; i < tLen; i++) tvs[i].clear();
 	}
