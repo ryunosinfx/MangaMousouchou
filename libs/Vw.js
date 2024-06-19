@@ -33,6 +33,7 @@ export class Vw {
 	static btn = (p, att, sty) => Vw.add(p, 'button', att, sty);
 	static ipt = (p, att, sty) => Vw.add(p, 'input', att, sty);
 	static gi = (i) => Vw.d.getElementById(i);
+	static gp = (e) => e.parentNode;
 	static rm = (e) => (e.parentNode ? e.parentNode.removeChild(e) : null);
 	static rc = (e) => {
 		while (e.firstChild) e.removeChild(e.firstChild);
@@ -59,12 +60,13 @@ export class Vw {
 	static cT = (e) => (e.textContent = '');
 	static aC = (e, cN) => e.classList.add(cN);
 	static rC = (e, cN) => e.classList.remove(cN);
+	static hC = (e, cN) => e.classList.contains(cN);
 	static tC = (e, cN) => e.classList.toggle(cN);
 	static sa = (e, att) =>
 		att && typeof att === 'object' ? Object.keys(att).map((k) => e.setAttribute(k, att[k])) : att;
 	static gB = () => Vw.d.getElementsByTagName('body')[0];
 	static gT = (p, T) => p.getElementsByTagName(T)[0];
-	static ce = (tN) => (console.log('Vw.d:', Vw.d) ? null : Vw.d.createElement(tN));
+	static ce = (tN) => Vw.d.createElement(tN);
 	static copy = async (d) => navigator.clipboard.writeText(d);
 	static uO = (a, b) => {
 		const c = {};
