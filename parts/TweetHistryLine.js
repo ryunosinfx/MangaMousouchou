@@ -3,6 +3,7 @@ import { Util } from '../libs/Util.js';
 import { ID_DELIMITER } from '../const/Delimiters.js';
 import { TweetValueManger } from '../services/logic/TweetValueManger.js';
 import { TweetHistoryView } from './TweetHistoryView.js';
+import { TweetMenu } from './TweetMenu.js';
 import { FrameTypes } from '../const/FrameTypes.js';
 export class TweetHistryLine {
 	constructor(parentElm) {
@@ -10,6 +11,7 @@ export class TweetHistryLine {
 		this.map = new Map();
 		this.a = [];
 		this.l = [];
+		this.p = [];
 		this.used = [];
 		this.frame = Vw.div(parentElm, { class: 'TweetHistory' });
 		const hideArea = Vw.div(this.frame, { class: 'TweetHistoryHide', text: '▲History ' });
@@ -41,16 +43,20 @@ export class TweetHistryLine {
 			a.push(c);
 		}
 		a.sort().reverse();
+		for (const b of a) console.log(b, Util.convertTimeToFromat(b));
 		const al = a.length;
 		const l = this.l;
+		const p = this.p;
+		p.splice(0, p.length);
 		const ll = l.length;
 		const used = this.used;
 		if (al > ll) for (let i = ll; i < al; i++) l.push(used.length > 0 ? used.pop() : new TweetHistoryView(this));
 		for (let i = 0; i < al; i++) {
 			const c = a[i];
 			const tv = map.get(c);
-			l[i].setData(this.frame, tv, al);
+			p.push(l[i].setData(this.frame, tv, al));
 		}
+		await Promise.all(p);
 		if (ll > al)
 			for (let i = al; i < ll; i++) {
 				const orver = l.pop();
@@ -62,5 +68,6 @@ export class TweetHistryLine {
 	hide() {
 		Vw.aC(this.frame, FrameTypes.NONE);
 		this.isHidden = true;
+		TweetMenu.hide();
 	}
 }

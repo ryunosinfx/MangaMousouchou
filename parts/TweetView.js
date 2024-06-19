@@ -74,11 +74,7 @@ export class TweetView {
 		const main = Vw.div(frame, { class: 'TweetMain' });
 		this.imageArea = Vw.div(frame, { class: 'inputImageArea' });
 		const tweetHistryLine = new TweetHistryLine(frame);
-		Vw.ael(
-			menu,
-			'click',
-			(e) => TweetMenu.show(this.menu, this.tw, frame, tweetHistryLine) && e.stopImmediatePropagation()
-		);
+		Vw.ael(menu, 'click', (e) => TweetMenu.show(this, frame, tweetHistryLine) && e.stopImmediatePropagation());
 		TweetImage.init(this);
 		this.elm = { frame, header, creatTime, updateTime, type, state, menu, main, tweetHistryLine };
 	}

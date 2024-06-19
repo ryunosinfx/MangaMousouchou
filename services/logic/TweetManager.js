@@ -26,7 +26,8 @@ export class TweetManager {
 		const dd = BinUtil.s2u(JSON.stringify(a));
 		await WorkerManager.postMsg(WORKER_TYPE.server, dd);
 	}
-	static async editTweet(tw, conf) {
+	static async editTweet(tw, imageDatas = [], conf) {
+		tw.imageDatas = imageDatas;
 		const a = TweetManager.a;
 		for (const k in tw) a[k] = tw[k];
 		a.conf = conf;

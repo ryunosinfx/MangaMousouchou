@@ -2,6 +2,7 @@ import { Vw } from '../libs/Vw.js';
 import { FileUtil } from '../libs/FileUtil.js';
 import { Util } from '../libs/Util.js';
 import { TweetImage } from './TweetImage.js';
+import { FrameTypes } from '../const/FrameTypes.js';
 
 export class TweetImageEditor extends TweetImage {
 	constructor(parentElm, c, imgClearCallBack = () => {}) {
@@ -36,6 +37,7 @@ export class TweetImageEditor extends TweetImage {
 	static init = (c) => TweetImage.init(c, TweetImageEditor);
 	static onLoadImage = async (e, c) => {
 		const files = e.target.files;
+		console.log('onLoadImage c.count:' + c.imgCount, files);
 		for (const file of files) {
 			const fileName = file.name;
 			const mimeType = file.type;
@@ -43,7 +45,7 @@ export class TweetImageEditor extends TweetImage {
 			const dataUrl = await FileUtil.readAsDataURL(file);
 			const v = c.imageSlots[c.imgCount];
 			if (c.imgCount >= 4 || !v) break;
-			console.log('onLoadImage c.count:' + c.count, c.imageSlots[0] === v);
+			console.log('onLoadImage c.count:' + c.imgCount, c.imageSlots[0] === v);
 			await v.setData(dataUrl, fileName, byteLength, mimeType);
 			c.imgCount++;
 			if (c.imgCount >= 4) {
@@ -54,11 +56,18 @@ export class TweetImageEditor extends TweetImage {
 	};
 	static onRemove(vI, c) {
 		const iss = c.imageSlots;
+		let count = 0;
+		for (let i = 0; i < iss.length; i++) count += Vw.hC(iss[i].frame, FrameTypes.NONE) ? 0 : 1;
 		for (let i = 0; i < iss.length; i++)
 			if (iss[i] === vI) {
-				c.imgCount--;
+				c.imgCount = count > 0 ? count : 0;
 				iss.splice(i, 1);
 				iss.push(vI);
+				const vIf = vI.frame;
+				const p = Vw.gp(vIf);
+				Vw.rm(vIf);
+				Vw.a(p, vIf);
+				vI.delete();
 				Vw.enable(c.fileForm);
 				break;
 			}

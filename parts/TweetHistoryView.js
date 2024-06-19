@@ -3,10 +3,14 @@ import { Util } from '../libs/Util.js';
 import { TweetManager } from '../services/logic/TweetManager.js';
 import { TweetValueManger } from '../services/logic/TweetValueManger.js';
 import { LifeCycle } from '../services/manager/LifeCycle.js';
+import { TweetImage } from './TweetImage.js';
+import { TweetImageManager } from '../services/logic/TweetImageManager.js';
 export class TweetHistoryView {
 	constructor(historyLine) {
 		this.historyLine = historyLine;
 		this.nodes = [];
+		this.imageSlots = [];
+		this.imgCount = 0;
 		this.build();
 	}
 	build() {
@@ -16,12 +20,14 @@ export class TweetHistoryView {
 		const footer = Vw.div(this.frame, { class: 'TweetHistoryViewFooter' });
 		this.time = Vw.span(footer, { class: 'time' });
 		this.msg = Vw.span(footer, { text: '' });
+		this.imageArea = Vw.div(this.frame, { class: 'inputImageArea' });
 		const copyBtn = Vw.btn(footer, { text: 'copy' });
 		const deleteBtn = Vw.btn(footer, { text: 'delete' });
 		Vw.ael(copyBtn, 'click', () => this.copy());
 		Vw.ael(deleteBtn, 'click', () => this.delete());
+		TweetImage.init(this);
 	}
-	setData(parentElm, tv, count) {
+	async setData(parentElm, tv, count) {
 		this.tv = tv;
 		const nodes = this.nodes;
 		nodes.splice(0, nodes.length);
@@ -41,6 +47,7 @@ export class TweetHistoryView {
 		for (let i = 0; i < rl; i++) Vw.sT(nodes[i], rows[i]);
 		for (let i = rl; i < ml; i++) Vw.rm(nodes[i]);
 		nodes.splice(0, nodes.length);
+		TweetImage.load(this, await TweetImageManager.loads(tv.binaryDataIds));
 	}
 	clear() {
 		Vw.rm(this.frame);

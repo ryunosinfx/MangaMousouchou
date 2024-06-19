@@ -1,6 +1,7 @@
 import { Vw } from '../libs/Vw.js';
 import { TweetTextEditor } from './TweetTextEditor.js';
 import { TweetManager } from '../services/logic/TweetManager.js';
+import { TweetImage } from './TweetImage.js';
 import { LifeCycle } from '../services/manager/LifeCycle.js';
 export class TweetMenu {
 	static editor = new TweetTextEditor();
@@ -9,6 +10,7 @@ export class TweetMenu {
 	static editingTweet = null;
 	static menuBtnParent = null;
 	static tweetHistryLine = null;
+	static currentTweetView = null;
 	static init(parent) {
 		const elms = TweetMenu.elms;
 		if (!elms) {
@@ -29,7 +31,10 @@ export class TweetMenu {
 			Vw.ael(showHistory, 'click', () => TweetMenu.showHistory());
 		}
 	}
-	static show(menuBtn, tweet, menuBtnParent, tweetHistryLine) {
+	static show(currentTweetView, menuBtnParent, tweetHistryLine) {
+		TweetMenu.currentTweetView = currentTweetView;
+		const menuBtn = currentTweetView.menu,
+			tweet = currentTweetView.tw;
 		TweetMenu.tweetHistryLine = tweetHistryLine;
 		console.log('TweetMenu show A ', TweetMenu.editor);
 		TweetMenu.editor.hide();
@@ -50,6 +55,7 @@ export class TweetMenu {
 	static showTextEditor() {
 		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
 		TweetMenu.editingTweet = TweetMenu.currentTweet;
+		TweetImage.init(TweetMenu.currentTweetView);
 		TweetMenu.editor.open(TweetMenu.editingTweet, TweetMenu.menuBtnParent);
 	}
 	static async deleteTweet() {

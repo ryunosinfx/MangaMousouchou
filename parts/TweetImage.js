@@ -22,9 +22,7 @@ export class TweetImage {
 		if (!dataUrl) return;
 		Vw.rc(this.imgFrame);
 		const img = new Image();
-		console.log('setData A this.frame:', this.frame, dataUrl);
 		await FileUtil.imageLoad(img, dataUrl);
-		console.log('setData 1 this.frame:', this.frame, dataUrl);
 		BinUtil.d;
 		const w = img.width;
 		const h = img.height;
@@ -40,7 +38,7 @@ export class TweetImage {
 		Vw.sT(this.mimeType, mimeType);
 		Vw.sT(this.byteLength, byteLength + '');
 		Vw.a(this.imgFrame, img);
-		console.log('setData B this.frame:', this.frame);
+		console.log('TweetImage setData B this.frame:', this.frame);
 		Vw.rC(this.frame, FrameTypes.NONE);
 	}
 	delete() {
@@ -51,22 +49,21 @@ export class TweetImage {
 		Vw.aC(this.frame, FrameTypes.NONE);
 		Vw.rc(this.imgFrame);
 	}
-	static load(c, imageDatas) {
+	static load = async (c, imageDatas) => {
+		const iss = c.imageSlots;
 		if (!Array.isArray(imageDatas)) {
 			for (let i = 0; i < iss.length; i++) iss[i].clear();
 			return;
 		}
-		const iss = c.imageSlots;
 		for (let i = 0; i < iss.length; i++) {
 			const d = imageDatas[i];
 			if (!d) {
 				iss[i].clear();
 				continue;
 			}
-			console.log('load d', d, c);
-			iss[i].setData(d.dataUrl, d.fileName, d.byteLength, d.mimeType);
+			await iss[i].setData(d.dataUrl, d.fileName, d.byteLength, d.mimeType);
 		}
-	}
+	};
 	static init(c, ic = TweetImage) {
 		const iss = c.imageSlots;
 		c.imgCount = 0;
