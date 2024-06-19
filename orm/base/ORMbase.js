@@ -25,15 +25,12 @@ export class ORMbase {
 		for (const k in d) {
 			const v = d[k];
 			r[k] = v;
-			console.log('flatenDataExec d:', d);
 			delete d[k];
 		}
 	};
 	static flatenData = (r) => {
-		console.log('flatData A', JSON.stringify(r));
 		if (Array.isArray(r)) for (const c of r) ORMbase.flatenDataExec(c);
 		else ORMbase.flatenDataExec(r);
-		console.log('flatData B', r);
 		return r;
 	};
 
