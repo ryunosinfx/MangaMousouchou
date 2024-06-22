@@ -175,4 +175,63 @@ div.TwwetImage {
 }
 div.TwwetImage > img {
 	display: block;
+	cursor: pointer;
+}
+div.ImageViewer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 999;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(69, 71, 75, 0.753);
+}
+div.ImageViewerHeader {
+	padding: 2px;
+}
+div.ImageViewerHeader > span {
+	display: inline-block;
+	background-color: #333;
+	color: #ccc;
+	padding: 1px 5px 3px 5px;
+	border-radius: 5px;
+	margin: 2px;
+	width: 99.5vw;
+}
+div.ImageViewerHeader > span > span {
+	display: inline-block;
+	padding: 0px;
+	margin: 2px;
+}
+div.ImageViewer {
+}
+div.ImageViewer.NONE {
+	display: none;
+}
+div.ImageViewer > div.imageArea {
+	width: 100%;
+	height: calc(100% - 3em);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+div.ImageViewer > div.imageArea > img {
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	cursor: pointer;
+}
+
+div.ImageViewer.ImageFull {
+	overflow: scroll;
+}
+
+div.ImageViewer.ImageFull > div > img {
+	max-width: none;
+	max-height: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1999;
 }

@@ -5,6 +5,7 @@ import { PagesView } from './PagesView.js';
 import { TimeLine } from './TimeLine.js';
 import { TweetMenu } from '../parts/TweetMenu.js';
 import { MainInput } from './MainInput.js';
+import { ImageViewer } from '../parts/ImageViewer.js';
 const AppTitle = 'MangaMousouChou';
 
 export class MainView {
@@ -14,23 +15,23 @@ export class MainView {
 		this.editorTextAreaElm = null;
 		this.callbacks = [];
 		this.init();
+		addEventListener('popstate', (e) => ImageViewer.openHasIDHash(e));
 		this.second();
 	}
 	async init() {
 		const frame = Vw.div(Vw.b, { class: 'frame', id: 'frame' });
 		TweetMenu.init(frame);
-		console.log(Vw);
+		// console.log(Vw);
 		const header = Vw.div(frame, { class: 'header', id: 'header' });
 		this.buildTitle(header);
 		this.buildMenu(header);
 		const contents = Vw.div(frame, { class: 'Contents', id: 'Contents' });
 		this.buildEditor(contents);
 		this.buildPages(contents);
+		ImageViewer.init(frame);
 		// this.TextEditor.setOutputElm(this.PagesView.getFormattedElm(), this.PagesView.getJsonElm());
 		Vw.div(frame, { class: 'footer', id: 'footer' });
-		this.callbacks.push((parsed) => {
-			this.PagesView.calc(parsed);
-		});
+		this.callbacks.push((parsed) => this.PagesView.calc(parsed));
 		// window.addEventListener('resize', this.TextEditor.getOnWindsizeChange());
 	}
 	second() {

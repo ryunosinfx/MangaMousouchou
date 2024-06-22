@@ -1,7 +1,7 @@
 import { Vw } from '../libs/Vw.js';
 import { FileUtil } from '../libs/FileUtil.js';
 import { FrameTypes } from '../const/FrameTypes.js';
-import { BinUtil } from '../libs/BinaryUtil.js';
+import { ImageViewer } from './ImageViewer.js';
 
 const size = 300;
 const inageCount = 4;
@@ -17,13 +17,13 @@ export class TweetImage {
 		this.size = Vw.span(this.statArea, { class: 'stat' });
 		this.byteLength = Vw.span(this.statArea, { class: 'stat' });
 		this.imgFrame = Vw.div(this.frame, { class: 'TwwetImage' });
+		Vw.ael(this.imgFrame, 'click', () => ImageViewer.doOpen(this.imgId));
 	}
-	async setData(dataUrl, fileName, byteLength, mimeType) {
+	async setData(imgId, dataUrl, fileName, byteLength, mimeType) {
 		if (!dataUrl) return;
 		Vw.rc(this.imgFrame);
 		const img = new Image();
 		await FileUtil.imageLoad(img, dataUrl);
-		BinUtil.d;
 		const w = img.width;
 		const h = img.height;
 		const isToll = w < h;
@@ -33,6 +33,7 @@ export class TweetImage {
 		img.width = nw;
 		img.height = nh;
 		this.img = img;
+		this.imgId = imgId;
 		Vw.sT(this.size, w + 'x' + h);
 		Vw.sT(this.fileName, fileName);
 		Vw.sT(this.mimeType, mimeType);
@@ -61,7 +62,7 @@ export class TweetImage {
 				iss[i].clear();
 				continue;
 			}
-			await iss[i].setData(d.dataUrl, d.fileName, d.byteLength, d.mimeType);
+			await iss[i].setData(d.id, d.dataUrl, d.fileName, d.byteLength, d.mimeType);
 		}
 	};
 	static init(c, ic = TweetImage) {
