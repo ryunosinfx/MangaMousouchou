@@ -44,4 +44,7 @@ export class Util {
 		await navigator.clipboard.writeText(text);
 		if (typeof callback === 'function') callback();
 	}
+	static addHistory(hash, stateObj = null) {
+		history.pushState(stateObj, '', location.pathname + '#' + hash);
+	}
 }
