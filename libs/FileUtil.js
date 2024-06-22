@@ -46,13 +46,20 @@ export class FileUtil {
 				alert('An error occurred reading this file.');
 		}
 	}
+	static imgDl = async (fileName, dataUrl) => {
+		const blob = await (await fetch(dataUrl)).blob();
+		FileUtil.downloadBlob(fileName, blob);
+	};
 	static download(fileName, content, mimeType = 'text/plain') {
 		const blob = new Blob([content], { type: mimeType });
+		FileUtil.downloadBlob(fileName, blob);
+	}
+	static downloadBlob(fileName, blob) {
 		const ancker = document.createElement('a');
 		ancker.style.display = 'none';
 		ancker.download = fileName;
 		ancker.href = window.URL.createObjectURL(blob);
-		ancker.dataset.downloadurl = [mimeType, fileName, ancker.href].join(':');
+		ancker.dataset.downloadurl = [blob.type, fileName, ancker.href].join(':');
 		document.body.appendChild(ancker);
 		ancker.click();
 		setTimeout(() => document.body.removeChild(ancker));
