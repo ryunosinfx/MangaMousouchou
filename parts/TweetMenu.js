@@ -41,10 +41,12 @@ export class TweetMenu {
 		if (!menuBtn || !tweet) return;
 		TweetMenu.currentTweet = tweet;
 		TweetMenu.menuBtnParent = menuBtnParent;
+		const offsetY = window.scrollY;
 		const rect = menuBtn.getBoundingClientRect();
 		console.log('TweetMenu show B ', menuBtn, rect);
 		const p = TweetMenu.elms.p;
-		Vw.sS(p, { top: rect.top + 'px', left: rect.left + 'px' });
+		const y = rect.top + offsetY;
+		Vw.sS(p, { top: y + 'px', left: rect.left + 'px' });
 		Vw.rC(p, 'None');
 	}
 	static hide() {
