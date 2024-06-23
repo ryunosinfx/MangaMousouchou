@@ -24,7 +24,7 @@ export class TweetTextEditor {
 			const cb = cbOBJ.func;
 			console.log(e, cb);
 		}
-		Vw.ael(this.maineditor, 'input', () => TweetEditor.refresh(this.editor, this.maineditor, this.countArea));
+		Vw.ael(this.maineditor, 'input', () => TweetEditor.refresh(this.editor, this.maineditor, this.countArea, this));
 		Vw.ael(this.maineditor, 'focus', () => TweetEditor.onForcus());
 		Vw.ael(fileForm, 'change', (e) => TweetImageEditor.onLoadImage(e, this));
 		Vw.ael(okBtn, 'click', () => this.submit());
@@ -33,7 +33,8 @@ export class TweetTextEditor {
 		TweetImageEditor.init(this);
 		TweetEditor.refresh(this.editor, this.maineditor, this.countArea);
 	}
-	open(tw, parentElm) {
+	open(tw, parentElm, currentTweetView) {
+		this.currentTweetView = currentTweetView;
 		this.tw = tw;
 		const v = tw.value;
 		const tid = this.tw.id;
@@ -43,7 +44,7 @@ export class TweetTextEditor {
 		this.maineditor.value = hasSessionData ? r.value.text : v.text;
 		this.isHidden = false;
 		TweetImageEditor.load(this, tw.imageDatas);
-		TweetEditor.refresh(this.editor, this.maineditor, this.countArea);
+		TweetEditor.refresh(this.editor, this.maineditor, this.countArea, this);
 	}
 	getValue() {
 		return this.maineditor.value;
@@ -55,7 +56,7 @@ export class TweetTextEditor {
 		await TweetManager.editTweet(this.tw, TweetImageEditor.getImageDatas(this));
 		TweetImageEditor.init(this);
 		await LifeCycle.refresh();
-		TweetEditor.refresh(this.editor, this.maineditor, this.countArea);
+		TweetEditor.refresh(this.editor, this.maineditor, this.countArea, this);
 	}
 	hide(isNotRegister) {
 		if (this.isHidden) return;
@@ -66,6 +67,7 @@ export class TweetTextEditor {
 				? SessonStorageManager.register(tid, { text: this.getValue() })
 				: null;
 		Vw.rm(this.editor);
+		this.currentTweetView.resetByTid(tid);
 		this.isHidden = true;
 	}
 	setOutputElm() {}

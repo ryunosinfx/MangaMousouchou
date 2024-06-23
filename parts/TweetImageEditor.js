@@ -3,6 +3,7 @@ import { FileUtil } from '../libs/FileUtil.js';
 import { Util } from '../libs/Util.js';
 import { TweetImage } from './TweetImage.js';
 import { FrameTypes } from '../const/FrameTypes.js';
+import { TweetImageManager } from '../services/logic/TweetImageManager.js';
 
 export class TweetImageEditor extends TweetImage {
 	constructor(parentElm, c, imgClearCallBack = () => {}) {
@@ -16,8 +17,8 @@ export class TweetImageEditor extends TweetImage {
 			TweetImageEditor.onRemove(this, c);
 		});
 	}
-	async setData(dataUrl, fileName, byteLength, mimeType, id = '') {
-		await super.setData(dataUrl, fileName, byteLength, mimeType);
+	async setData(id, dataUrl, fileName, byteLength, mimeType) {
+		await super.setData(id, dataUrl, fileName, byteLength, mimeType);
 		this.imageData.fileName = fileName;
 		this.imageData.mimeType = mimeType;
 		this.imageData.dataUrl = dataUrl;
@@ -46,13 +47,32 @@ export class TweetImageEditor extends TweetImage {
 			const v = c.imageSlots[c.imgCount];
 			if (c.imgCount >= 4 || !v) break;
 			console.log('onLoadImage c.count:' + c.imgCount, c.imageSlots[0] === v);
-			await v.setData(dataUrl, fileName, byteLength, mimeType);
+			await v.setData(await FileUtil.mkHash(dataUrl), dataUrl, fileName, byteLength, mimeType);
 			c.imgCount++;
 			if (c.imgCount >= 4) {
 				Vw.disable(c.fileForm);
 				break;
 			}
 		}
+	};
+	static onLoadImageFromDataUrl = async (durl, c) =>
+		await TweetImageEditor.onLoadImageFromId(await FileUtil.mkHash(durl), c);
+	static onLoadImageFromId = async (id, c) =>
+		await TweetImageEditor.onLoadImageFromImageData(await TweetImageManager.load(id), c);
+	static onLoadImageFromImageData = async (imageData, c) => {
+		const iss = c.imageSlots;
+		const v = iss[c.imgCount];
+		console.log('onLoadImageFromDataUrl c.count:' + c.imgCount, imageData, v);
+		if (c.imgCount >= 4 || !v || !imageData) return false;
+		for (const is of iss) {
+			const imgdata = is.getImageData();
+			if (imageData.id === imgdata.id) return true;
+		}
+		console.log('onLoadImageFromDataUrl c.count:' + c.imgCount, iss[0] === v);
+		await v.setData(imageData.id, imageData.dataUrl, imageData.fileName, imageData.byteLength, imageData.mimeType);
+		c.imgCount++;
+		if (c.imgCount >= 4) Vw.disable(c.fileForm);
+		return true;
 	};
 	static onRemove(vI, c) {
 		const iss = c.imageSlots;

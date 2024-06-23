@@ -20,7 +20,7 @@ export class MainInput {
 		Vw.ael(ok, 'click', MainInput.postNew(MainInput.maineditor));
 		Vw.ael(clear, 'click', MainInput.clear(MainInput.maineditor));
 		Vw.ael(MainInput.maineditor, 'input', () =>
-			TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea)
+			TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea, MainInput)
 		);
 		Vw.ael(MainInput.maineditor, 'focus', () => TweetEditor.onForcus());
 		Vw.ael(fileForm, 'change', (e) => TweetImageEditor.onLoadImage(e, MainInput));
@@ -28,7 +28,7 @@ export class MainInput {
 			console.log(cb);
 		}
 		TweetImageEditor.init(MainInput);
-		TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea);
+		TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea, MainInput);
 	}
 	static postNew(ta) {
 		return async () => {
@@ -38,7 +38,7 @@ export class MainInput {
 			await TweetManager.postTweet(text, undefined, TweetImageEditor.getImageDatas(MainInput));
 			TweetImageEditor.init(MainInput);
 			await LifeCycle.refresh();
-			TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea);
+			TweetEditor.refresh(MainInput.editor, MainInput.maineditor, MainInput.countArea, MainInput);
 		};
 	}
 	static clear(ta) {

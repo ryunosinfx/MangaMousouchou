@@ -56,7 +56,7 @@ export class TweetMenu {
 		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
 		TweetMenu.editingTweet = TweetMenu.currentTweet;
 		TweetImage.init(TweetMenu.currentTweetView);
-		TweetMenu.editor.open(TweetMenu.editingTweet, TweetMenu.menuBtnParent);
+		TweetMenu.editor.open(TweetMenu.editingTweet, TweetMenu.menuBtnParent, TweetMenu.currentTweetView);
 	}
 	static async deleteTweet() {
 		if (!TweetMenu.currentTweet || !TweetMenu.menuBtnParent) return;
