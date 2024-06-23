@@ -1,10 +1,10 @@
-import { Vw } from '../libs/Vw.js';
-import { Util } from '../libs/Util.js';
-import { ID_DELIMITER } from '../const/Delimiters.js';
-import { TweetValueManger } from '../services/logic/TweetValueManger.js';
+import { Vw } from '../../libs/Vw.js';
+import { Util } from '../../libs/Util.js';
+import { ID_DELIMITER } from '../../const/Delimiters.js';
+import { TweetValueManger } from '../../services/logic/TweetValueManger.js';
 import { TweetHistoryView } from './TweetHistoryView.js';
 import { TweetMenu } from './TweetMenu.js';
-import { FrameTypes } from '../const/FrameTypes.js';
+import { FrameTypes } from '../../const/FrameTypes.js';
 export class TweetHistryLine {
 	constructor(parentElm) {
 		this.parentElm = parentElm;

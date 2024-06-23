@@ -1,9 +1,9 @@
-import { Vw } from '../libs/Vw.js';
-import { FileUtil } from '../libs/FileUtil.js';
-import { Util } from '../libs/Util.js';
+import { Vw } from '../../libs/Vw.js';
+import { FileUtil } from '../../libs/FileUtil.js';
+import { Util } from '../../libs/Util.js';
 import { TweetImage } from './TweetImage.js';
-import { FrameTypes } from '../const/FrameTypes.js';
-import { TweetImageManager } from '../services/logic/TweetImageManager.js';
+import { FrameTypes } from '../../const/FrameTypes.js';
+import { TweetImageManager } from '../../services/logic/TweetImageManager.js';
 
 export class TweetImageEditor extends TweetImage {
 	constructor(parentElm, c, imgClearCallBack = () => {}) {

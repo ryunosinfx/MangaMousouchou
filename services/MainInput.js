@@ -2,7 +2,7 @@ import { Vw } from '../libs/Vw.js';
 import { TweetManager } from './logic/TweetManager.js';
 import { LifeCycle } from './manager/LifeCycle.js';
 import { TweetEditor } from '../parts/logic/TweetEditor.js';
-import { TweetImageEditor } from '../parts/TweetImageEditor.js';
+import { TweetImageEditor } from '../parts/Tweet/TweetImageEditor.js';
 export class MainInput {
 	static imageSlots = [];
 	static imageMap = new Map();

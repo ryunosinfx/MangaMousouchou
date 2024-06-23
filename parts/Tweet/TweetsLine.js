@@ -1,5 +1,5 @@
-import { TweetOrderTypes } from '../const/TweetOrderTypes.js';
-import { Vw } from '../libs/Vw.js';
+import { TweetOrderTypes } from '../../const/TweetOrderTypes.js';
+import { Vw } from '../../libs/Vw.js';
 import { TweetView } from './TweetView.js';
 export class TweetsLine {
 	constructor(parentElm, orderType = TweetOrderTypes.createTimeDESC) {

@@ -1,4 +1,4 @@
-import { TweetsLine } from '../parts/TweetsLine.js';
+import { TweetsLine } from '../parts/Tweet/TweetsLine.js';
 import { TweetManager } from './logic/TweetManager.js';
 export class TimeLine {
 	static lines = [];

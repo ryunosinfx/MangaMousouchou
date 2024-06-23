@@ -1,7 +1,7 @@
-import { Vw } from '../libs/Vw.js';
-import { FileUtil } from '../libs/FileUtil.js';
-import { FrameTypes } from '../const/FrameTypes.js';
-import { ImageViewer } from './ImageViewer.js';
+import { Vw } from '../../libs/Vw.js';
+import { FileUtil } from '../../libs/FileUtil.js';
+import { FrameTypes } from '../../const/FrameTypes.js';
+import { ImageViewer } from '../Images/ImageViewer.js';
 
 const size = 300;
 const inageCount = 4;

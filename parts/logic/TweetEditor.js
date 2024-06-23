@@ -2,8 +2,8 @@ import { Vw } from '../../libs/Vw.js';
 import { ID_DELIMITER } from '../../const/Delimiters.js';
 import { IMG } from '../../const/FileTypes.js';
 import { TweetConditions } from '../../const/TweetConditions.js';
-import { TweetMenu } from '../TweetMenu.js';
-import { TweetImageEditor } from '../TweetImageEditor.js';
+import { TweetMenu } from '../Tweet/TweetMenu.js';
+import { TweetImageEditor } from '../Tweet/TweetImageEditor.js';
 const delimiter = '#' + IMG + ID_DELIMITER;
 const regexImgUrlSuffix = delimiter + '([-_0-9A-Za-z]+)';
 export class TweetEditor {

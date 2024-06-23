@@ -1,8 +1,8 @@
-import { Vw } from '../libs/Vw.js';
-import { Util } from '../libs/Util.js';
+import { Vw } from '../../libs/Vw.js';
+import { Util } from '../../libs/Util.js';
 import { TweetMenu } from './TweetMenu.js';
 import { TweetHistryLine } from './TweetHistryLine.js';
-import { TweetManager } from '../services/logic/TweetManager.js';
+import { TweetManager } from '../../services/logic/TweetManager.js';
 import { TweetImage } from './TweetImage.js';
 export class TweetView {
 	constructor(parentElm) {

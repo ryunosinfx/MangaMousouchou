@@ -1,10 +1,10 @@
-import { Vw } from '../libs/Vw.js';
-import { Util } from '../libs/Util.js';
-import { TweetManager } from '../services/logic/TweetManager.js';
-import { TweetValueManger } from '../services/logic/TweetValueManger.js';
-import { LifeCycle } from '../services/manager/LifeCycle.js';
+import { Vw } from '../../libs/Vw.js';
+import { Util } from '../../libs/Util.js';
+import { TweetManager } from '../../services/logic/TweetManager.js';
+import { TweetValueManger } from '../../services/logic/TweetValueManger.js';
+import { LifeCycle } from '../../services/manager/LifeCycle.js';
 import { TweetImage } from './TweetImage.js';
-import { TweetImageManager } from '../services/logic/TweetImageManager.js';
+import { TweetImageManager } from '../../services/logic/TweetImageManager.js';
 export class TweetHistoryView {
 	constructor(historyLine) {
 		this.historyLine = historyLine;

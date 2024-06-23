@@ -1,8 +1,8 @@
-import { Vw } from '../libs/Vw.js';
-import { SessonStorageManager } from '../libs/SessionStrageManager.js';
-import { TweetManager } from '../services/logic/TweetManager.js';
-import { LifeCycle } from '../services/manager/LifeCycle.js';
-import { TweetEditor } from './logic/TweetEditor.js';
+import { Vw } from '../../libs/Vw.js';
+import { SessonStorageManager } from '../../libs/SessionStrageManager.js';
+import { TweetManager } from '../../services/logic/TweetManager.js';
+import { LifeCycle } from '../../services/manager/LifeCycle.js';
+import { TweetEditor } from '../logic/TweetEditor.js';
 import { TweetImageEditor } from './TweetImageEditor.js';
 export class TweetTextEditor {
 	constructor(callbacks) {

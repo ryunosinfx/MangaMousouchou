@@ -3,9 +3,9 @@ import { Vw } from '../libs/Vw.js';
 import { MainMenu } from './MainMenu.js';
 import { PagesView } from './PagesView.js';
 import { TimeLine } from './TimeLine.js';
-import { TweetMenu } from '../parts/TweetMenu.js';
+import { TweetMenu } from '../parts/Tweet/TweetMenu.js';
 import { MainInput } from './MainInput.js';
-import { ImageViewer } from '../parts/ImageViewer.js';
+import { ImageViewer } from '../parts/Images/ImageViewer.js';
 const AppTitle = 'MangaMousouChou';
 
 export class MainView {

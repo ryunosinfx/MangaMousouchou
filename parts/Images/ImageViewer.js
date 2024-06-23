@@ -1,11 +1,11 @@
-import { Vw } from '../libs/Vw.js';
-import { FrameTypes } from '../const/FrameTypes.js';
-import { TweetImageManager } from '../services/logic/TweetImageManager.js';
-import { TweetMenu } from './TweetMenu.js';
-import { FileUtil } from '../libs/FileUtil.js';
-import { Util } from '../libs/Util.js';
-import { IMG } from '../const/FileTypes.js';
-import { ID_DELIMITER } from '../const/Delimiters.js';
+import { Vw } from '../../libs/Vw.js';
+import { FrameTypes } from '../../const/FrameTypes.js';
+import { TweetImageManager } from '../../services/logic/TweetImageManager.js';
+import { TweetMenu } from '../Tweet/TweetMenu.js';
+import { FileUtil } from '../../libs/FileUtil.js';
+import { Util } from '../../libs/Util.js';
+import { IMG } from '../../const/FileTypes.js';
+import { ID_DELIMITER } from '../../const/Delimiters.js';
 export class ImageViewer {
 	static init(parentElm) {
 		ImageViewer.frame = Vw.div(parentElm, { class: 'ImageViewer' });

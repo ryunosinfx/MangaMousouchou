@@ -1,8 +1,8 @@
-import { Vw } from '../libs/Vw.js';
+import { Vw } from '../../libs/Vw.js';
 import { TweetTextEditor } from './TweetTextEditor.js';
-import { TweetManager } from '../services/logic/TweetManager.js';
+import { TweetManager } from '../../services/logic/TweetManager.js';
 import { TweetImage } from './TweetImage.js';
-import { LifeCycle } from '../services/manager/LifeCycle.js';
+import { LifeCycle } from '../../services/manager/LifeCycle.js';
 export class TweetMenu {
 	static editor = new TweetTextEditor();
 	static elms = null;
