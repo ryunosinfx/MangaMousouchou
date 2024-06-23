@@ -32,6 +32,7 @@ export class TweetImage {
 		const nw = isToll ? Math.floor(r * size) : size;
 		img.width = nw;
 		img.height = nh;
+		if (this.img) Vw.rm(this.img);
 		this.img = img;
 		this.imgId = imgId;
 		Vw.sT(this.size, w + 'x' + h);
