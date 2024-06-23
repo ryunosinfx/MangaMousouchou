@@ -7,7 +7,7 @@ export class TweetImageManager {
 		const ids = Array.isArray(binaryDataIds) ? binaryDataIds : [];
 		if (!Array.isArray(imageDatas)) return;
 		for (const imageData of imageDatas) {
-			if (!imageData.dataUrl || imageData.id) continue;
+			if (!imageData.dataUrl) continue;
 			const durl = imageData.dataUrl;
 			const id = await FileUtil.mkHash(durl);
 			const bd = await BinaryData.load(id);
