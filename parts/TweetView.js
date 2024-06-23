@@ -15,8 +15,7 @@ export class TweetView {
 		this.imgCount = 0;
 	}
 	async resetByTid(tid) {
-		const tw = await TweetManager.loadTweet(tid);
-		this.setData(tw);
+		this.setData(await TweetManager.loadTweet(tid));
 	}
 	setData(tw) {
 		if (!this.elm) this.build();
