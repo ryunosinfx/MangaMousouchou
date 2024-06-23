@@ -102,7 +102,7 @@ export class TweetManager {
 		const tv = map.get(tid);
 		tw.value = tv;
 		if (Array.isArray(tv.binaryDataIds)) tw.imageDatas = await TweetImageManager.loads(tv.binaryDataIds);
-		console.log('loadTweet tw:', tw);
+		// console.log('loadTweet tw:', tw);
 		return tw;
 	}
 }
