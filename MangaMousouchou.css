@@ -72,10 +72,19 @@ div.MainMenu {
 div.MainMenu > div {
 	color: #aaa;
 	margin: 1px;
-	padding: 2px 5px;
+	padding: 2px 10px;
 	border-radius: 5px;
 	font-size: 80%;
+	line-height: 2em;
 	background-color: #333;
+	cursor: pointer;
+}
+div.MainMenu > div:hover {
+	background-color: #111;
+}
+div.MainMenu > div.SELECTED {
+	background-color: #000;
+	color: #fff;
 }
 div.TweetRow {
 	height: 1.5em;

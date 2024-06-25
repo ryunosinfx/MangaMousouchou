@@ -4,6 +4,6 @@ export class MangaMousouchou {
 	static async exec() {
 		console.log('aaa');
 		await WorkerManager.init();
-		const mv = new MainView();
+		MainView.init();
 	}
 }

@@ -9,35 +9,32 @@ import { ImageViewer } from '../parts/Images/ImageViewer.js';
 const AppTitle = 'MangaMousouChou';
 
 export class MainView {
-	constructor() {
+	static async init() {
 		console.log('MainView');
-		this.pagesElm = null;
-		this.editorTextAreaElm = null;
-		this.callbacks = [];
-		this.init();
-		addEventListener('popstate', (e) => ImageViewer.openHasIDHash(e));
-		this.second();
-	}
-	async init() {
+		MainView.pagesElm = null;
+		MainView.editorTextAreaElm = null;
+		MainView.callbacks = [];
 		const frame = Vw.div(Vw.b, { class: 'frame', id: 'frame' });
 		TweetMenu.init(frame);
 		// console.log(Vw);
 		const header = Vw.div(frame, { class: 'header', id: 'header' });
-		this.buildTitle(header);
-		this.buildMenu(header);
-		const contents = Vw.div(frame, { class: 'Contents', id: 'Contents' });
-		this.buildEditor(contents);
-		this.buildPages(contents);
+		MainView.buildTitle(header);
+		MainView.buildMenu(header);
+		const contentsAF = Vw.div(frame, { class: 'Contents', id: 'ContentsAF' });
+		MainMenu.addAttachedFilesElm(contentsAF);
+		const contentsTL = Vw.div(frame, { class: 'Contents', id: 'ContentsTL' });
+		MainMenu.addTimeLineElm(contentsTL);
+		MainInput.init(contentsTL);
+		MainView.buildPages(contentsTL);
 		ImageViewer.init(frame);
-		// this.TextEditor.setOutputElm(this.PagesView.getFormattedElm(), this.PagesView.getJsonElm());
+		// MainView.TextEditor.setOutputElm(MainView.PagesView.getFormattedElm(), MainView.PagesView.getJsonElm());
 		Vw.div(frame, { class: 'footer', id: 'footer' });
-		this.callbacks.push((parsed) => this.PagesView.calc(parsed));
-		// window.addEventListener('resize', this.TextEditor.getOnWindsizeChange());
+		MainView.callbacks.push((parsed) => MainView.PagesView.calc(parsed));
+		// window.addEventListener('resize', MainView.TextEditor.getOnWindsizeChange());
+		addEventListener('popstate', (e) => ImageViewer.openHasIDHash(e));
+		MainMenu.clickTimeLine();
 	}
-	second() {
-		this.mainmenu.setTextArea(this.editorTextAreaElm);
-	}
-	buildTitle(header) {
+	static buildTitle(header) {
 		const titleFrame = Vw.div(header, { class: 'titleFrame', id: 'titleFrame' });
 		Vw.span(titleFrame, {
 			class: 'Editor',
@@ -46,24 +43,20 @@ export class MainView {
 		});
 		Vw.span(titleFrame, { class: 'version', id: 'version', text: ` v${VERSION}` });
 	}
-	buildMenu(header) {
+	static buildMenu(header) {
 		const menu = Vw.div(header, { class: 'menu', id: 'menu' });
-		this.mainmenu = new MainMenu(menu);
+		MainView.mainmenu = MainMenu.init(menu);
 	}
-	buildPages(contents) {
+	static buildPages(contents) {
 		const pages = Vw.div(contents, { class: 'Pages', id: 'Pages' });
-		this.pagesElm = pages;
-		this.PagesView = new PagesView(this.pagesElm);
-		this.timeline = TimeLine.build(pages);
+		MainView.pagesElm = pages;
+		MainView.PagesView = new PagesView(MainView.pagesElm);
+		MainView.timeline = TimeLine.build(pages);
 		TimeLine.refresh();
 	}
-	getJoinCallBackFunc() {
+	static getJoinCallBackFunc() {
 		return async (args) => {
-			for (const callback of this.callbacks) await callback(args);
+			for (const callback of MainView.callbacks) await callback(args);
 		};
-	}
-	buildEditor(contents) {
-		MainInput.init(contents);
-		// this.MainInput = new MainInput(contents, this.getJoinCallBackFunc());
 	}
 }
