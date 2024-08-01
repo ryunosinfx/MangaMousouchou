@@ -4,7 +4,7 @@ import { FrameTypes } from '../../const/FrameTypes.js';
 import { ImageViewer } from '../Images/ImageViewer.js';
 
 const size = 300;
-const inageCount = 4;
+export const imageCount = 4;
 export class TweetImage {
 	constructor(parentElm) {
 		this.parentElm = parentElm;
@@ -66,10 +66,10 @@ export class TweetImage {
 			await iss[i].setData(d.id, d.dataUrl, d.fileName, d.byteLength, d.mimeType);
 		}
 	};
-	static init(c, ic = TweetImage) {
+	static init(c, ic = TweetImage, max = imageCount) {
 		const iss = c.imageSlots;
 		c.imgCount = 0;
 		for (let i = 0; i < iss.length; i++) iss[i].clear();
-		for (let i = iss.length; i < inageCount; i++) iss.push(new ic(c.imageArea, c));
+		for (let i = iss.length; i < max; i++) iss.push(new ic(c.imageArea, c));
 	}
 }
