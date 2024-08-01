@@ -160,6 +160,22 @@ div.inputImageArea > div.TwwetImageEdit:nth-child(3) {
 div.inputImageArea > div.TwwetImageEdit:nth-child(4) {
 	background-color: lightskyblue;
 }
+div.inputImageBlockArea {
+	display: flex;
+	flex-wrap: wrap;
+}
+div.inputImageBlockArea > div.TwwetImageEdit:nth-child(4n) {
+	background-color: aqua;
+}
+div.inputImageBlockArea > div.TwwetImageEdit:nth-child(4n - 1) {
+	background-color: aquamarine;
+}
+div.inputImageBlockArea > div.TwwetImageEdit:nth-child(4m - 2) {
+	background-color: lightcyan;
+}
+div.inputImageBlockArea > div.TwwetImageEdit:nth-child(4n - 3) {
+	background-color: lightskyblue;
+}
 div.TwwetImageEditHeader {
 	width: 320px;
 	display: flex;

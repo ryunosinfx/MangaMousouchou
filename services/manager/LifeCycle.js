@@ -12,6 +12,7 @@ import { TweetTag } from '../../orm/TweetTag.js';
 import { TweetType } from '../../orm/TweetType.js';
 import { TweetValue } from '../../orm/TweetValue.js';
 import { TimeLine } from '../TimeLine.js';
+import { ImagesLine } from '../../parts/Images/ImagesLine.js';
 export class LifeCycle {
 	static isInited = false;
 	static async init() {
@@ -33,5 +34,6 @@ export class LifeCycle {
 	}
 	static async refresh() {
 		await TimeLine.refresh();
+		await ImagesLine.refresh();
 	}
 }

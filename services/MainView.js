@@ -3,6 +3,7 @@ import { Vw } from '../libs/Vw.js';
 import { MainMenu } from './MainMenu.js';
 import { PagesView } from './PagesView.js';
 import { TimeLine } from './TimeLine.js';
+import { ImagesLine } from '../parts/Images/ImagesLine.js';
 import { TweetMenu } from '../parts/Tweet/TweetMenu.js';
 import { MainInput } from './MainInput.js';
 import { ImageViewer } from '../parts/Images/ImageViewer.js';
@@ -25,7 +26,7 @@ export class MainView {
 		const contentsTL = Vw.div(frame, { class: 'Contents', id: 'ContentsTL' });
 		MainMenu.addTimeLineElm(contentsTL);
 		MainInput.init(contentsTL);
-		MainView.buildPages(contentsTL);
+		MainView.buildPages(contentsTL, contentsAF);
 		ImageViewer.init(frame);
 		// MainView.TextEditor.setOutputElm(MainView.PagesView.getFormattedElm(), MainView.PagesView.getJsonElm());
 		Vw.div(frame, { class: 'footer', id: 'footer' });
@@ -47,12 +48,15 @@ export class MainView {
 		const menu = Vw.div(header, { class: 'menu', id: 'menu' });
 		MainView.mainmenu = MainMenu.init(menu);
 	}
-	static buildPages(contents) {
-		const pages = Vw.div(contents, { class: 'Pages', id: 'Pages' });
+	static buildPages(contentsTL, contentsAF) {
+		const pages = Vw.div(contentsTL, { class: 'Pages', id: 'Pages' });
 		MainView.pagesElm = pages;
 		MainView.PagesView = new PagesView(MainView.pagesElm);
 		MainView.timeline = TimeLine.build(pages);
 		TimeLine.refresh();
+		ImagesLine.setParentElm(contentsAF);
+		ImagesLine.init();
+		ImagesLine.refresh();
 	}
 	static getJoinCallBackFunc() {
 		return async (args) => {

@@ -2,6 +2,9 @@ import { FileUtil } from '../../libs/FileUtil.js';
 import { BinaryData } from '../../orm/BinaryData.js';
 const cacheDuration = 1000 * 1000;
 export class TweetImageManager {
+	static withGetPropName = ['createTime'];
+	static sortMap = new Map();
+	static sortIds = [];
 	static cacheMap = new Map();
 	static save = async (tid, imageDatas, binaryDataIds = []) => {
 		const ids = Array.isArray(binaryDataIds) ? binaryDataIds : [];
@@ -21,6 +24,30 @@ export class TweetImageManager {
 			ids.push(id);
 		}
 		return ids;
+	};
+	static loadsAll = async (a = [], isSortByCreateTime = false) => {
+		const withGetPropName = isSortByCreateTime ? TweetImageManager.withGetPropName : null;
+		const rows = await BinaryData.getAll({ isKeyOnly: true, withGetPropName });
+		if (isSortByCreateTime) {
+			const sortMap = TweetImageManager.sortMap;
+			sortMap.clear();
+			const sortIds = TweetImageManager.sortIds;
+			sortIds.splice(0, sortIds.length);
+			for (const row of rows) {
+				const id = row.id;
+				const createTime = row.createTime;
+				const iid = createTime + '_' + id;
+				sortMap.set(iid, id);
+				sortIds.push(iid);
+			}
+			sortIds.sort().reverse();
+			const ids = [];
+			for (const iid of sortIds) ids.push(sortMap.get(iid));
+			sortIds.splice(0, sortIds.length);
+			sortMap.clear();
+			await TweetImageManager.loads(ids, a);
+		} else await TweetImageManager.loads(rows, a);
+		return a;
 	};
 	static loads = async (ids, a = []) => {
 		for (const id of ids) a.push(await TweetImageManager.load(id));
