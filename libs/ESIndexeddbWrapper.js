@@ -144,8 +144,8 @@ class IA {
 	async get(k) {
 		return gD(await this.getRecord(k));
 	}
-	getAll(ofst, lc, isKO = false, kPx) {
-		return this.#i.slctAll(this.tn, N, N, ofst, lc, isKO, kPx, this.isC);
+	getAll(ofst, lc, isKO = false, kPx, wp = null) {
+		return this.#i.slctAll(this.tn, N, N, ofst, lc, isKO, kPx, wp, this.isC);
 	}
 	delete(k) {
 		return k ? this.#i.del(this.tn, k, this.isC) : N;
@@ -277,7 +277,7 @@ class IH {
 				tn,
 				c,
 				d,
-				() => o.sAll({ tn, rng, drct, ofst: d.offset, cnt: d.lc, isKO: d.isKO, kPx: d.kPx }, d.cb),
+				() => o.sAll({ tn, rng, drct, ofst: d.offset, cnt: d.lc, isKO: d.isKO, kPx: d.kPx, wp: d.wp }, d.cb),
 				isC
 			);
 		if (cSByKey === c) return z.gC(tn, c, d, () => o.sByK({ tn, key }), isC);
@@ -294,11 +294,11 @@ class IH {
 		if (cDelIdx === c) return o.di(tn, d.idxN);
 		if (cGetOBN === c) return o.getOBN();
 	}
-	slctAllFM(tn, k, drct, ofst, lc, isKO, kPx, isC = 1) {
+	slctAllFM(tn, k, drct, ofst, lc, isKO, kPx, wp, isC = 1) {
 		const n = k.slice(0, -1) + String.fromCharCode(k.slice(-1).charCodeAt() + 1);
-		return this.slctAll(tn, IDBKeyRange.bound(k, n, false, true), drct, ofst, lc, isKO, kPx, isC);
+		return this.slctAll(tn, IDBKeyRange.bound(k, n, false, true), drct, ofst, lc, isKO, kPx, wp, isC);
 	}
-	slctAll(tn, rng, drct, ofst, lc, isKO, kPx, isC = 1) {
+	slctAll(tn, rng, drct, ofst, lc, isKO, kPx, wp, isC = 1) {
 		return this.q(cSAll, {
 			tn, //selectall
 			rng,
@@ -307,6 +307,7 @@ class IH {
 			lc,
 			isKO,
 			kPx,
+			wp,
 			isC,
 		});
 	}
@@ -453,9 +454,9 @@ class IC {
 		const z = this,
 			ob = z.gOS(await z.oDB().catch(tE(`sAll->oDB tn:${p.tn}`)), p.tn, M_R);
 		// console.log('sAll C ob:', ob);
-		return await z.sAllE(ob, p.rng, 0, p.ofst, p.cnt, p.isKO, p.kPx, cbc);
+		return await z.sAllE(ob, p.rng, 0, p.ofst, p.cnt, p.isKO, p.kPx, p.wp, cbc);
 	}
-	sAllE(ob, d, isGetF1, ofst, cnt, isKO = false, kPx = '', cb) {
+	sAllE(ob, d, isGetF1, ofst, cnt, isKO = false, kPx = '', wp = null, cb) {
 		return pr((v, j) => {
 			const isValidCB = typeof ofst === 'function',
 				isOnLimit = typeof ofst === 'number' && typeof cnt === 'number' && ofst > 0 && cnt > 0,
@@ -471,7 +472,12 @@ class IC {
 					if (isKPxArray) {
 						if (!kPx.includes(c.key)) return c.continue();
 					} else if (kPx && c.key.substring(0, kPxL) !== kPx) return c.continue();
-					const v = isKO ? c.key : c.value;
+					const isWP = Array.isArray(wp) && wp.length > 0;
+					const v = isWP ? {} : isKO ? c.key : c.value;
+					if (isWP) {
+						v.key = c.key;
+						for (const pn of wp) v[pn] = c.value[pn];
+					}
 					if (isValidCB && !cb(v)) return c.continue();
 					if (isOnLimit)
 						if (ofst > rC) return c.continue(void 0, rC++);

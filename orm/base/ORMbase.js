@@ -103,7 +103,9 @@ export class ORMbase {
 		return ORMbase.flatenData(await this.ia.get(id));
 	}
 	static getAll = async (c, conf = ORMbase.defaultConf) =>
-		ORMbase.flatenData(await c.ia.getAll(conf.offset, conf.count, conf.isKeyOnly, conf.prefix));
+		ORMbase.flatenData(
+			await c.ia.getAll(conf.offset, conf.count, conf.isKeyOnly, conf.prefix, conf.withGetPropName)
+		);
 	async getAll() {
 		await this.init();
 		return ORMbase.flatenData(await this.ia.getAll());
