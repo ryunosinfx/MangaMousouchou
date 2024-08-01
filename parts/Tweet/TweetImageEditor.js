@@ -1,7 +1,7 @@
 import { Vw } from '../../libs/Vw.js';
 import { FileUtil } from '../../libs/FileUtil.js';
 import { Util } from '../../libs/Util.js';
-import { TweetImage } from './TweetImage.js';
+import { TweetImage, imageCount } from './TweetImage.js';
 import { FrameTypes } from '../../const/FrameTypes.js';
 import { TweetImageManager } from '../../services/logic/TweetImageManager.js';
 
@@ -35,8 +35,8 @@ export class TweetImageEditor extends TweetImage {
 		super.clear();
 		Util.clearObj(this.imageData);
 	}
-	static init = (c) => TweetImage.init(c, TweetImageEditor);
-	static onLoadImage = async (e, c) => {
+	static init = (c, max = imageCount) => TweetImage.init(c, TweetImageEditor, max);
+	static onLoadImage = async (e, c, max = imageCount) => {
 		const files = e.target.files;
 		console.log('onLoadImage c.count:' + c.imgCount, files);
 		for (const file of files) {
@@ -45,11 +45,11 @@ export class TweetImageEditor extends TweetImage {
 			const byteLength = file.size;
 			const dataUrl = await FileUtil.readAsDataURL(file);
 			const v = c.imageSlots[c.imgCount];
-			if (c.imgCount >= 4 || !v) break;
+			if (c.imgCount >= max || !v) break;
 			console.log('onLoadImage c.count:' + c.imgCount, c.imageSlots[0] === v);
 			await v.setData(await FileUtil.mkHash(dataUrl), dataUrl, fileName, byteLength, mimeType);
 			c.imgCount++;
-			if (c.imgCount >= 4) {
+			if (c.imgCount >= max) {
 				Vw.disable(c.fileForm);
 				break;
 			}
@@ -59,11 +59,11 @@ export class TweetImageEditor extends TweetImage {
 		await TweetImageEditor.onLoadImageFromId(await FileUtil.mkHash(durl), c);
 	static onLoadImageFromId = async (id, c) =>
 		await TweetImageEditor.onLoadImageFromImageData(await TweetImageManager.load(id), c);
-	static onLoadImageFromImageData = async (imageData, c) => {
+	static onLoadImageFromImageData = async (imageData, c, max = imageCount) => {
 		const iss = c.imageSlots;
 		const v = iss[c.imgCount];
 		console.log('onLoadImageFromDataUrl c.count:' + c.imgCount, imageData, v);
-		if (c.imgCount >= 4 || !v || !imageData) return false;
+		if (c.imgCount >= max || !v || !imageData) return false;
 		for (const is of iss) {
 			const imgdata = is.getImageData();
 			if (imageData.id === imgdata.id) return true;
@@ -71,7 +71,7 @@ export class TweetImageEditor extends TweetImage {
 		console.log('onLoadImageFromDataUrl c.count:' + c.imgCount, iss[0] === v);
 		await v.setData(imageData.id, imageData.dataUrl, imageData.fileName, imageData.byteLength, imageData.mimeType);
 		c.imgCount++;
-		if (c.imgCount >= 4) Vw.disable(c.fileForm);
+		if (c.imgCount >= max) Vw.disable(c.fileForm);
 		return true;
 	};
 	static onRemove(vI, c) {
